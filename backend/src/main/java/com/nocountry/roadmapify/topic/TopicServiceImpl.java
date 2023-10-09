@@ -103,7 +103,7 @@ public class TopicServiceImpl implements TopicService{
     public void save(Topic topic) {
 
         List<TopicResource> resources = new ArrayList<>();
-        if(!topic.getResources().isEmpty()){
+        if(topic.getResources()!= null){
         for (TopicResource resource : topic.getResources()) {
             TopicResource topicResource = TopicResource.builder()
                     .title(resource.getTitle())
