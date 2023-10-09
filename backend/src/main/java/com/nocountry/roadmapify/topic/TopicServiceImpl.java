@@ -14,6 +14,7 @@ public class TopicServiceImpl implements TopicService{
 
     private final TopicRepository topicRepository;
     private final ModelMapper modelMapper;
+    private final TopicResourceRepository resourceRepository;
     @Override
     public List<TopicResponse> getAll() {
         var topics = topicRepository.findAll();
@@ -30,6 +31,9 @@ public class TopicServiceImpl implements TopicService{
             }
             for (Topic child :topicRepository.findAllByParentId(topic.getId())) {
                 response.addChild(modelMapper.map(child, ChildrenDTO.class));
+            }
+            for(TopicResource resource : topic.getResources()){
+                response.addResource(resource);
             }
             responses.add(response);
         }
@@ -48,7 +52,7 @@ public class TopicServiceImpl implements TopicService{
     @Override
     public TopicResponse getById(Long id) {
         Topic topic = topicRepository.findById(id).orElseThrow(
-                ()->new RuntimeException("Parent doesn't exists.")
+                ()->new RuntimeException("Parent doesn't exist with id: "+ id)
         );
         TopicResponse response = TopicResponse.builder()
                 .isRoot(topic.getIsRoot())
@@ -63,13 +67,16 @@ public class TopicServiceImpl implements TopicService{
         for (Topic child : topicRepository.findAllByParentId(id)) {
             response.addChild(modelMapper.map(child, ChildrenDTO.class));
         }
+        for(TopicResource resource : topic.getResources()){
+            response.addResource(resource);
+        }
         return response;
     }
     @Override
     public TopicResponse getByName(String name) {
         String formattedName = name.replace("-"," ");
         Topic topic = topicRepository.findByNameIgnoreCase(formattedName).orElseThrow(
-                ()->new RuntimeException("Parent doesn't exists.")
+                ()->new RuntimeException("Parent doesn't exists with name: " +formattedName)
         );
         TopicResponse response = TopicResponse.builder()
                 .isRoot(topic.getIsRoot())
@@ -84,6 +91,9 @@ public class TopicServiceImpl implements TopicService{
         for (Topic child : topicRepository.findAllByParentId(topic.getId())) {
             response.addChild(modelMapper.map(child, ChildrenDTO.class));
         }
+        for(TopicResource resource : topic.getResources()){
+            response.addResource(resource);
+        }
         return response;
     }
 
@@ -92,26 +102,35 @@ public class TopicServiceImpl implements TopicService{
     @Transactional(rollbackFor = Exception.class)
     public void save(Topic topic) {
 
+        List<TopicResource> resources = new ArrayList<>();
+        if(!topic.getResources().isEmpty()){
+        for (TopicResource resource : topic.getResources()) {
+            TopicResource topicResource = TopicResource.builder()
+                    .title(resource.getTitle())
+                    .link(resource.getLink())
+                    .build();
+            resources.add(resourceRepository.save(topicResource));
+        }
+        }
+
         if (topic.getParent()!=null) {
-
-        Topic parent = topicRepository.findById(topic.getParent().getId()).orElseThrow(
-                ()->new RuntimeException("Parent doesn't exists")
+        Long parentId = topic.getParent().getId();
+        Topic parent = topicRepository.findById(parentId).orElseThrow(
+                ()->new RuntimeException("Parent doesn't exist with id: " +parentId)
         );
-
         //parent exist, set to new topic
         topic.setParent(parent);
-
-        //update parent
-        topicRepository.save(parent);
         }
-        //save child
+        topic.setResources(resources);
+        //save new topic
         topicRepository.save(topic);
+
     }
 
     @Override
     public void deleteTopicById(Long id) {
         topicRepository.findById(id).orElseThrow(
-                ()->new RuntimeException("Topic doesn't exists")
+                ()->new RuntimeException("Topic doesn't exist with id: "+ id)
         );
 
         topicRepository.deleteById(id);

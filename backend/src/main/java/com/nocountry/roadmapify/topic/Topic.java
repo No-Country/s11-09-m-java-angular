@@ -1,11 +1,15 @@
 package com.nocountry.roadmapify.topic;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -31,7 +35,17 @@ public class Topic {
     private Topic parent;
     @NotNull(message = "isRoot field is required")
     private Boolean isRoot;
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("topic")
+    List<TopicResource> resources;
 
+
+    public void addResource(TopicResource resource){
+        if(resources==null){
+            resources= new ArrayList<>();
+        }
+        resources.add(resource);
+    }
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
