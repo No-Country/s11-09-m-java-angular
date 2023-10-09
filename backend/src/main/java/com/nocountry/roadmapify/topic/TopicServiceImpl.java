@@ -28,7 +28,7 @@ public class TopicServiceImpl implements TopicService{
             if(topic.getParent()!=null){
                 response.setParent(modelMapper.map(topic.getParent(),ParentDTO.class));
             }
-            for (Topic child : topic.getChildren()) {
+            for (Topic child :topicRepository.findAllByParentId(topic.getId())) {
                 response.addChild(modelMapper.map(child, ChildrenDTO.class));
             }
             responses.add(response);
@@ -46,22 +46,43 @@ public class TopicServiceImpl implements TopicService{
     }
 
     @Override
-    public TopicResponse getAllByParent(Long id) {
-        Topic parent = topicRepository.findById(id).orElseThrow(
+    public TopicResponse getById(Long id) {
+        Topic topic = topicRepository.findById(id).orElseThrow(
                 ()->new RuntimeException("Parent doesn't exists.")
         );
         TopicResponse response = TopicResponse.builder()
-                .isRoot(parent.getIsRoot())
-                .name(parent.getName())
-                .description(parent.getDescription())
-                .id(parent.getId())
+                .isRoot(topic.getIsRoot())
+                .name(topic.getName())
+                .description(topic.getDescription())
+                .id(topic.getId())
                 .build();
 
-            if(parent.getParent()!=null){
-                response.setParent(modelMapper.map(parent.getParent(),ParentDTO.class));
-            }
-            for (Topic child : parent.getChildren()) {
-                response.addChild(modelMapper.map(child, ChildrenDTO.class));
+        if(topic.getParent()!=null){
+            response.setParent(modelMapper.map(topic.getParent(),ParentDTO.class));
+        }
+        for (Topic child : topicRepository.findAllByParentId(id)) {
+            response.addChild(modelMapper.map(child, ChildrenDTO.class));
+        }
+        return response;
+    }
+    @Override
+    public TopicResponse getByName(String name) {
+        String formattedName = name.replace("-"," ");
+        Topic topic = topicRepository.findByNameIgnoreCase(formattedName).orElseThrow(
+                ()->new RuntimeException("Parent doesn't exists.")
+        );
+        TopicResponse response = TopicResponse.builder()
+                .isRoot(topic.getIsRoot())
+                .name(topic.getName())
+                .description(topic.getDescription())
+                .id(topic.getId())
+                .build();
+
+        if(topic.getParent()!=null){
+            response.setParent(modelMapper.map(topic.getParent(),ParentDTO.class));
+        }
+        for (Topic child : topicRepository.findAllByParentId(topic.getId())) {
+            response.addChild(modelMapper.map(child, ChildrenDTO.class));
         }
         return response;
     }
@@ -79,8 +100,7 @@ public class TopicServiceImpl implements TopicService{
 
         //parent exist, set to new topic
         topic.setParent(parent);
-        //set this new Topic to parent
-        parent.addChild(topic);
+
         //update parent
         topicRepository.save(parent);
         }
@@ -92,7 +112,6 @@ public class TopicServiceImpl implements TopicService{
     public void deleteTopicById(Long id) {
         topicRepository.findById(id).orElseThrow(
                 ()->new RuntimeException("Topic doesn't exists")
-
         );
 
         topicRepository.deleteById(id);

@@ -5,7 +5,8 @@ import java.util.List;
 public interface TopicService {
 
     List<TopicResponse> getAll();
-    TopicResponse getAllByParent(Long id);
+    TopicResponse getById(Long id);
+    TopicResponse getByName(String name);
 
     List<ParentDTO> getAllParents();
 

@@ -1,5 +1,6 @@
 package com.nocountry.roadmapify.topic;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,9 +20,13 @@ public class TopicController {
     public ResponseEntity<List<TopicResponse>> getAll(){
         return ResponseEntity.status(200).body(topicService.getAll());
     }
-    @GetMapping("{parentId}")
-    public ResponseEntity<TopicResponse> getRoadmapByParenId(@PathVariable Long parentId){
-        return ResponseEntity.status(200).body(topicService.getAllByParent(parentId));
+    @GetMapping("/topicId/{id}")
+    public ResponseEntity<TopicResponse> getById(@PathVariable Long id){
+        return ResponseEntity.status(200).body(topicService.getById(id));
+    }
+    @GetMapping("/name/{name}")
+    public ResponseEntity<TopicResponse> getByName(@PathVariable String name){
+        return ResponseEntity.status(200).body(topicService.getByName(name));
     }
 
     @GetMapping
@@ -29,8 +34,9 @@ public class TopicController {
         return ResponseEntity.status(200).body(topicService.getAllParents());
     }
 
+
     @PostMapping
-    public ResponseEntity<HttpStatus> save(@RequestBody Topic topic){
+    public ResponseEntity<HttpStatus> save(@RequestBody @Valid Topic topic){
         topicService.save(topic);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
