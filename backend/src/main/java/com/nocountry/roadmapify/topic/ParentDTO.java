@@ -15,11 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ParentDTO {
-    private Long id;
     private String name;
     private String description;
     private Boolean isRoot;
     private List<TopicResourceDTO> resources;
+    private ExperienceLevel experienceLevel;
 
     public void addResource(TopicResourceDTO resource){
         if(resources==null){

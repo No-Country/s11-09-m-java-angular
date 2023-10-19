@@ -5,6 +5,8 @@ import com.nocountry.roadmapify.topicresource.TopicResourceDTO;
 import com.nocountry.roadmapify.topicresource.TopicResourceRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,11 +27,22 @@ public class TopicServiceImpl implements TopicService{
         List<TopicResponse> responses = new ArrayList<>(topics.size());
         for (Topic topic : topics) {
             TopicResponse response = modelMapper.map(topic,TopicResponse.class);
+            response.add( //to links of RepresentationModel
+                    WebMvcLinkBuilder
+                            .linkTo(WebMvcLinkBuilder.methodOn(TopicController.class) // method on controller
+                             .getById(topic.getId())) //call to method with necessary parameters
+                            .withSelfRel()); //indicates rel
             if(topic.getParent()!=null){
                 response.setParent(modelMapper.map(topic.getParent(),ParentDTO.class));
+                response.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TopicController.class).getById(topic.getParent().getId())).withRel("parent"));
             }
             topicRepository.findAllByParentId(topic.getId()).forEach(
-                    child -> response.addChild(modelMapper.map(child, ChildrenDTO.class))
+                    child -> {
+                        ChildrenDTO childDto = modelMapper.map(child, ChildrenDTO.class);
+                        response.addChild(childDto);
+                        childDto.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TopicController.class).getById(child.getId())).withSelfRel());
+                    }
+
             );
             responses.add(response);
         }
@@ -106,22 +119,20 @@ public class TopicServiceImpl implements TopicService{
     }
 
     private TopicResponse makeTopicResponse(Topic topic){
-        TopicResponse response = TopicResponse.builder()
-                .isRoot(topic.getIsRoot())
-                .name(topic.getName())
-                .description(topic.getDescription())
-                .id(topic.getId())
-                .build();
-
+//        TopicResponse response = TopicResponse.builder()
+//                .isRoot(topic.getIsRoot())
+//                .name(topic.getName())
+//                .description(topic.getDescription())
+//                .experienceLevel(topic.getExperienceLevel())
+//                .build();
+        TopicResponse response = modelMapper.map(topic,TopicResponse.class);
         if(topic.getParent()!=null){
             response.setParent(modelMapper.map(topic.getParent(),ParentDTO.class));
         }
         for (Topic child : topicRepository.findAllByParentId(topic.getId())) {
             response.addChild(modelMapper.map(child, ChildrenDTO.class));
         }
-        for(TopicResource resource : topic.getResources()){
-            response.addResource(modelMapper.map(resource,TopicResourceDTO.class));
-        }
+
         return response;
     }
 

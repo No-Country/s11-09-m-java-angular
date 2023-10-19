@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,15 +15,15 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TopicResponse {
+public class TopicResponse extends RepresentationModel<TopicResponse> {
 
-    private Long id;
     private String name;
     private String description;
     private Boolean isRoot;
     private ParentDTO parent;
     private List<ChildrenDTO> children;
     private List<TopicResourceDTO> resources;
+    private ExperienceLevel experienceLevel;
 
     public void addChild(ChildrenDTO child){
         if(children ==null){

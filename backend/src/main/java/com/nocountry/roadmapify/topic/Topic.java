@@ -37,7 +37,9 @@ public class Topic {
     private Boolean isRoot;
     @OneToMany(mappedBy = "topic",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     @JsonIgnoreProperties("topic")
-    List<TopicResource> resources;
+    private List<TopicResource> resources;
+    @Enumerated(EnumType.STRING)
+    private ExperienceLevel experienceLevel;
 
 
     public void addResource(TopicResource resource){
