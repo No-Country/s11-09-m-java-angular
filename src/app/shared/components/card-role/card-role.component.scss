@@ -1,0 +1,55 @@
+$width-card: 4rem;
+$font-size: .75rem;
+
+$border-colors: (
+  black: #1E1E1E,
+  grey: #D9D9D9,
+  blue: #445FEB,
+  green: #00EF0A,
+  cyan: #44E1EB
+);
+
+$background-colors: (
+  black: #1E1E1E,
+  grey: #D9D9D9,
+  blue: #445FEB,
+  green: #00EF0A,
+  cyan: #44E1EB
+);
+
+@mixin border-color($color) {
+  border-color: $color!important;
+}
+
+@mixin background-color($color) {
+  background-color: $color;
+}
+
+@each $name, $color in $border-colors {
+  .#{$name}-border {
+    @include border-color($color);
+  }
+}
+
+@each $name, $color in $border-colors {
+  .#{$name}-bg {
+    @include background-color($color);
+  }
+}
+
+.card-role {
+  width: $width-card;
+}
+
+.role-img {
+  width: $width-card;
+}
+
+.card-title {
+  font-size: $font-size;
+  margin: .75rem 0 0 0;
+  text-align: center;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
