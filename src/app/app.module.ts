@@ -7,6 +7,7 @@ import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppRoutingModule} from "./app-routing.module";
+import {NavbarComponent} from "./shared/layouts/navbar/navbar.component";
 import { TreeTestsComponent } from './tree-tests/tree-tests.component';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
 import { TreeTest2Component } from './tree-test2/tree-test2.component';
