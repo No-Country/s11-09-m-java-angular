@@ -2,7 +2,6 @@ package com.nocountry.roadmapify.config;
 
 import com.nocountry.roadmapify.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.service.UnknownServiceException;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
