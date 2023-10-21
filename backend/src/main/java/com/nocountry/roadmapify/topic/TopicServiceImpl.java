@@ -1,11 +1,9 @@
 package com.nocountry.roadmapify.topic;
 
 import com.nocountry.roadmapify.topicresource.TopicResource;
-import com.nocountry.roadmapify.topicresource.TopicResourceDTO;
 import com.nocountry.roadmapify.topicresource.TopicResourceRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
