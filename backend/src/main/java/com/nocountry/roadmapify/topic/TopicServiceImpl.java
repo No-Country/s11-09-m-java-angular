@@ -117,18 +117,14 @@ public class TopicServiceImpl implements TopicService{
     }
 
     private TopicResponse makeTopicResponse(Topic topic){
-//        TopicResponse response = TopicResponse.builder()
-//                .isRoot(topic.getIsRoot())
-//                .name(topic.getName())
-//                .description(topic.getDescription())
-//                .experienceLevel(topic.getExperienceLevel())
-//                .build();
         TopicResponse response = modelMapper.map(topic,TopicResponse.class);
         if(topic.getParent()!=null){
             response.setParent(modelMapper.map(topic.getParent(),ParentDTO.class));
         }
         for (Topic child : topicRepository.findAllByParentId(topic.getId())) {
-            response.addChild(modelMapper.map(child, ChildrenDTO.class));
+            ChildrenDTO childDto = modelMapper.map(child, ChildrenDTO.class);
+            response.addChild(childDto);
+            childDto.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TopicController.class).getById(child.getId())).withSelfRel());
         }
 
         return response;

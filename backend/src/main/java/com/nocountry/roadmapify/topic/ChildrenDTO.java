@@ -16,6 +16,5 @@ public class ChildrenDTO extends RepresentationModel<ChildrenDTO> {
 
     private String name;
     private String description;
-    private List<ChildrenDTO> children;
     private ExperienceLevel experienceLevel;
 }
