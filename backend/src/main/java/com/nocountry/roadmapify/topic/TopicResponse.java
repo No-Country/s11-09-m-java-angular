@@ -1,9 +1,12 @@
 package com.nocountry.roadmapify.topic;
 
+import com.nocountry.roadmapify.topicresource.TopicResource;
+import com.nocountry.roadmapify.topicresource.TopicResourceDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,15 +15,15 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TopicResponse {
+public class TopicResponse extends RepresentationModel<TopicResponse> {
 
-    private Long id;
     private String name;
     private String description;
     private Boolean isRoot;
     private ParentDTO parent;
     private List<ChildrenDTO> children;
-    private List<TopicResource> resources;
+    private List<TopicResourceDTO> resources;
+    private ExperienceLevel experienceLevel;
 
     public void addChild(ChildrenDTO child){
         if(children ==null){
@@ -28,7 +31,7 @@ public class TopicResponse {
         }
         children.add(child);
     }
-    public void addResource(TopicResource resource){
+    public void addResource(TopicResourceDTO resource){
         if(resources==null){
             resources= new ArrayList<>();
         }

@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk-alpine
+FROM openjdk:17-jdk-alpine3.14
 
 COPY target/roadmapify-0.0.1-SNAPSHOT.jar /app/app.jar
 

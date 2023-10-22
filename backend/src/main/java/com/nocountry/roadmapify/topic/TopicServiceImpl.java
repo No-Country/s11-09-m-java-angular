@@ -1,7 +1,10 @@
 package com.nocountry.roadmapify.topic;
 
+import com.nocountry.roadmapify.topicresource.TopicResource;
+import com.nocountry.roadmapify.topicresource.TopicResourceRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,27 +19,32 @@ public class TopicServiceImpl implements TopicService{
     private final ModelMapper modelMapper;
     private final TopicResourceRepository resourceRepository;
     @Override
+    @Transactional
     public List<TopicResponse> getAll() {
         var topics = topicRepository.findAll();
         List<TopicResponse> responses = new ArrayList<>(topics.size());
         for (Topic topic : topics) {
-            TopicResponse response = TopicResponse.builder()
-                    .isRoot(topic.getIsRoot())
-                    .name(topic.getName())
-                    .description(topic.getDescription())
-                    .id(topic.getId())
-                    .build();
+            TopicResponse response = modelMapper.map(topic,TopicResponse.class);
+            response.add( //to links of RepresentationModel
+                    WebMvcLinkBuilder
+                            .linkTo(WebMvcLinkBuilder.methodOn(TopicController.class) // method on controller
+                             .getById(topic.getId())) //call to method with necessary parameters
+                            .withSelfRel()); //indicates rel
             if(topic.getParent()!=null){
                 response.setParent(modelMapper.map(topic.getParent(),ParentDTO.class));
+                response.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TopicController.class).getById(topic.getParent().getId())).withRel("parent"));
             }
-            for (Topic child :topicRepository.findAllByParentId(topic.getId())) {
-                response.addChild(modelMapper.map(child, ChildrenDTO.class));
-            }
-            for(TopicResource resource : topic.getResources()){
-                response.addResource(resource);
-            }
+            topicRepository.findAllByParentId(topic.getId()).forEach(
+                    child -> {
+                        ChildrenDTO childDto = modelMapper.map(child, ChildrenDTO.class);
+                        response.addChild(childDto);
+                        childDto.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TopicController.class).getById(child.getId())).withSelfRel());
+                    }
+
+            );
             responses.add(response);
         }
+
         return responses;
     }
     @Override
@@ -54,23 +62,7 @@ public class TopicServiceImpl implements TopicService{
         Topic topic = topicRepository.findById(id).orElseThrow(
                 ()->new RuntimeException("Parent doesn't exist with id: "+ id)
         );
-        TopicResponse response = TopicResponse.builder()
-                .isRoot(topic.getIsRoot())
-                .name(topic.getName())
-                .description(topic.getDescription())
-                .id(topic.getId())
-                .build();
-
-        if(topic.getParent()!=null){
-            response.setParent(modelMapper.map(topic.getParent(),ParentDTO.class));
-        }
-        for (Topic child : topicRepository.findAllByParentId(id)) {
-            response.addChild(modelMapper.map(child, ChildrenDTO.class));
-        }
-        for(TopicResource resource : topic.getResources()){
-            response.addResource(resource);
-        }
-        return response;
+        return makeTopicResponse(topic);
     }
     @Override
     public TopicResponse getByName(String name) {
@@ -78,23 +70,8 @@ public class TopicServiceImpl implements TopicService{
         Topic topic = topicRepository.findByNameIgnoreCase(formattedName).orElseThrow(
                 ()->new RuntimeException("Parent doesn't exists with name: " +formattedName)
         );
-        TopicResponse response = TopicResponse.builder()
-                .isRoot(topic.getIsRoot())
-                .name(topic.getName())
-                .description(topic.getDescription())
-                .id(topic.getId())
-                .build();
 
-        if(topic.getParent()!=null){
-            response.setParent(modelMapper.map(topic.getParent(),ParentDTO.class));
-        }
-        for (Topic child : topicRepository.findAllByParentId(topic.getId())) {
-            response.addChild(modelMapper.map(child, ChildrenDTO.class));
-        }
-        for(TopicResource resource : topic.getResources()){
-            response.addResource(resource);
-        }
-        return response;
+        return makeTopicResponse(topic);
     }
 
 
@@ -105,11 +82,7 @@ public class TopicServiceImpl implements TopicService{
         List<TopicResource> resources = new ArrayList<>();
         if(topic.getResources()!= null){
         for (TopicResource resource : topic.getResources()) {
-            TopicResource topicResource = TopicResource.builder()
-                    .title(resource.getTitle())
-                    .link(resource.getLink())
-                    .build();
-            resources.add(resourceRepository.save(topicResource));
+            resources.add(resourceRepository.save(resource));
         }
         }
 
@@ -123,7 +96,14 @@ public class TopicServiceImpl implements TopicService{
         }
         topic.setResources(resources);
         //save new topic
-        topicRepository.save(topic);
+        Topic newTopic = topicRepository.save(topic);
+
+        //update resources
+        for (TopicResource resource : resources) {
+            resource.setTopic(newTopic);
+            resourceRepository.save(resource);
+        }
+
 
     }
 
@@ -136,6 +116,19 @@ public class TopicServiceImpl implements TopicService{
         topicRepository.deleteById(id);
     }
 
+    private TopicResponse makeTopicResponse(Topic topic){
+        TopicResponse response = modelMapper.map(topic,TopicResponse.class);
+        if(topic.getParent()!=null){
+            response.setParent(modelMapper.map(topic.getParent(),ParentDTO.class));
+        }
+        for (Topic child : topicRepository.findAllByParentId(topic.getId())) {
+            ChildrenDTO childDto = modelMapper.map(child, ChildrenDTO.class);
+            response.addChild(childDto);
+            childDto.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TopicController.class).getById(child.getId())).withSelfRel());
+        }
+
+        return response;
+    }
 
 
 }

@@ -8,10 +8,11 @@ import java.util.Optional;
 
 public interface TopicRepository extends JpaRepository<Topic,Long> {
     List<Topic> findAllByParentId(Long id);
-
     @Query("select t from Topic t where t.parent.name = ?1")
     List<Topic> findAllByParentIgnoreCase(String name);
 
     Optional<Topic> findByNameIgnoreCase(String name);
+
+//    @Query("SELECT t FROM Topic t JOIN FETCH t.resources")
     List<Topic> findAllByIsRootTrue();
 }

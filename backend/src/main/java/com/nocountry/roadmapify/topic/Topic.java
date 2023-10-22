@@ -2,7 +2,7 @@ package com.nocountry.roadmapify.topic;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.annotation.Nullable;
+import com.nocountry.roadmapify.topicresource.TopicResource;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -35,9 +35,11 @@ public class Topic {
     private Topic parent;
     @NotNull(message = "isRoot field is required")
     private Boolean isRoot;
-    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "topic",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     @JsonIgnoreProperties("topic")
-    List<TopicResource> resources;
+    private List<TopicResource> resources;
+    @Enumerated(EnumType.STRING)
+    private ExperienceLevel experienceLevel;
 
 
     public void addResource(TopicResource resource){

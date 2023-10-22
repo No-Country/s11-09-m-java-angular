@@ -1,6 +1,7 @@
-package com.nocountry.roadmapify.topic;
+package com.nocountry.roadmapify.topicresource;
 
 
+import com.nocountry.roadmapify.topic.Topic;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +20,8 @@ public class TopicResource {
     private Long id;
     private String title;
     private String link;
+    @ManyToOne
+    private Topic topic;
 
     @Override
     public boolean equals(Object o) {
