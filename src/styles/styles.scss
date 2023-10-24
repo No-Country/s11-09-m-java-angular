@@ -4,7 +4,8 @@
 @import "../../node_modules/bootstrap/scss/bootstrap";
 @import "_typography.scss";
 @import "_palette.scss";
-
+@import "_forms.scss";
+@import "_buttons.scss";
 
 body {
   font-family: $primary-font-family;
