@@ -1,5 +1,7 @@
 package com.nocountry.roadmapify.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nocountry.roadmapify.roadmap.Roadmap;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -31,6 +34,9 @@ public class User implements UserDetails {
     Double experience;
     @Enumerated(EnumType.STRING)
     Role role;
+    @OneToMany(mappedBy = "userDoingRoadmap")
+    @JsonIgnore
+    private Set<Roadmap> roadmaps;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
