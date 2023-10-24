@@ -1,7 +1,56 @@
-.btn {
-  border-radius: 20px;
+$google-color-border: #EA4335;
+$google-background-color: transparent;
+$google-color: #EA4335;
+
+$facebook-color-border: #1877F2;
+$facebook-background-color: #1877F2;
+$facebook-color: #FFF;
+
+$github-color-border: #000;
+$github-background-color: #000;
+$github-color: #FFF;
+
+$max-width-mobile: 13.8125rem;
+$max-width-desktop: 17.875rem;
+
+
+.button-base {
+  min-width: $max-width-mobile;
+  padding-top: .44rem ;
+  padding-bottom: .44rem ;
+  border-radius: 1.25rem;
+  text-align: center;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 0.9375rem; /* 107.143% */
+  letter-spacing: 0.00625rem;
 }
+
 
 .container {
   max-width: 274px;
 }
+
+.btn.btn-google {
+  @extend .button-base;
+  background: $google-background-color;
+  border-color: $google-color;
+  color: $google-color;
+}
+
+.btn.btn-facebook {
+  @extend .button-base;
+  background: $facebook-background-color;
+  border-color: $facebook-color;
+  color: $facebook-color;
+}
+
+
+.btn.btn-github {
+  @extend .button-base;
+  background: $github-background-color;
+  border-color: $github-color-border;
+  color: $github-color;
+}
+
