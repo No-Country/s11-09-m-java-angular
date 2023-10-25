@@ -38,4 +38,13 @@ public class UserService {
     public Optional<User> getById(Long id) {
         return userRepository.findById(id);
     }
+
+
+    public UserDTO getByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+                ()->new UsernameNotFoundException("User doesn't exists with username: " + username)
+        );
+
+        return mapper.map(user,UserDTO.class);
+    }
 }
