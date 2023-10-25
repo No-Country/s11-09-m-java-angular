@@ -22,7 +22,7 @@ const routes: Routes = [
   /*
   {
     path: 'feature',
-    loadChildren: () => import('./feature/feature.module').then((modulo) => modulo.FeatureModule)
+    loadChildren: () => import('./feature/feature.module').then((modulo) => modulo.RoadmapModule)
   },
    */
   {

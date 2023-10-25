@@ -1,0 +1,32 @@
+.button-base, .btn.btn-github, .btn.btn-facebook, .btn.btn-google {
+  min-width: 13.8125rem;
+  padding-top: 0.44rem;
+  padding-bottom: 0.44rem;
+  border-radius: 1.25rem;
+  text-align: center;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 0.9375rem; /* 107.143% */
+  letter-spacing: 0.00625rem;
+}
+
+.btn.btn-google {
+  background: transparent;
+  border-color: #EA4335;
+  color: #EA4335;
+}
+
+.btn.btn-facebook {
+  background: #1877F2;
+  border-color: #FFF;
+  color: #FFF;
+}
+
+.btn.btn-github {
+  background: #000;
+  border-color: #000;
+  color: #FFF;
+}
+
+/*# sourceMappingURL=button-group-social.component.css.map */
