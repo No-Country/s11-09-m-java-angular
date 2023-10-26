@@ -1,0 +1,8 @@
+<div class="card-role">
+  <div [ngClass]="[borderColor + '-border', backgroundColor + '-bg', 'role-img', 'border', 'rounded-2']">
+    <div class="d-flex justify-content-center py-3">
+      <app-icon-role></app-icon-role>
+    </div>
+  </div>
+  <p *ngIf="showTitle" class="card-title">{{title}}</p>
+</div>

@@ -1,0 +1,18 @@
+$border-color: #4155A7;
+$background-color: #F7F6FA;
+
+input {
+  border-radius: 20px 0 0 20px;
+  border-color: $border-color;
+  background-color: $background-color;
+  border-right: 0;
+}
+
+span {
+  border-radius: 20px 20px 20px 0;
+  border-left: 0;
+  border-color: $border-color;
+  background-color: $background-color;
+}
+
+
