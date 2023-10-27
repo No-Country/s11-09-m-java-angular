@@ -1,13 +1,10 @@
 <ngx-graph class="rotate"
   class="chart-container"
+  [draggingEnabled]="false"
+  [autoZoom]="true"
+  [zoomSpeed]="0.05"
   [view]="[1920, 1080]"
   [links]="[
-    {
-      id: 'a',
-      source: 'a',
-      target: 'c1',
-      label: 'bc1'
-    },
     {
       id: 'c',
       source: 'a',
@@ -51,85 +48,68 @@
       label: 'Product thinking',
     },
     {
-      id: 'c1',
-      label: 'estrategia de producto'
-    },
-    {
-      id: 'c2',
-      label: 'Visión del producto'
-    },
-    {
-      id: 'c3',
-      label: 'propuesta de valor'
-    },
-    {
       id: 'b1',
       label: 'Mvp'
     },
     {
       id: 'b2',
-      label: 'lanzamiento del producto'
+      label: 'lanzamiento del'
     },
     {
       id: 'a1',
-      label: 'Análisis de uso del producto'
+      label: 'Análisis de uso'
     },
     {
       id: 'a2',
-      label: 'Retención de clientes'
+      label: 'Retención de '
     },
     {
       id: 'a3',
-      label: 'Pivote del producto'
+      label: 'Pivote del '
     },
     {
       id: 'd1',
-      label: 'Análisis de uso del producto'
+      label: 'Análisis de uso'
     },
     {
       id: 'd2',
-      label: 'Retención de clientes'
+      label: 'Retención de'
     },
     {
       id: 'd3',
-      label: 'Pivote del producto'
+      label: 'Pivote del'
     },
     {
-      id: 'na',
-      label: 'nodo aislado'
+      id: 'nodo vacio se rama',
+      label: ''
     },
     {
       id: 'e1',
-      label: 'Análisis de uso del producto'
+      label: 'Análisis de uso'
     },
     {
       id: 'e2',
-      label: 'Retención de clientes'
+      label: 'Retención de'
     },
     {
       id: 'e3',
-      label: 'Pivote del producto'
+      label: 'Pivote del'
     },
     {
       id: 'f1',
-      label: 'Análisis de uso del producto'
+      label: 'Análisis de uso'
     },
     {
       id: 'f2',
-      label: 'Retención de clientes'
+      label: 'Retención de'
     },
     {
       id: 'f3',
-      label: 'Pivote del producto'
+      label: 'Pivote del'
     },
 
   ]"
   [clusters]="[
-    {
-      id: 'one',
-      label: 'Pre lanzamiento',
-      childNodeIds: ['c1', 'c2', 'c3', 'v1']
-    },
     {
       id: 'two',
       label: 'lanzamiento',
@@ -142,17 +122,17 @@
     },
     {
       id: 'four',
-      label: '',
+      label: 'asdsad',
       childNodeIds: ['d1', 'd2', 'd3']
     },
     {
       id: 'five',
-      label: '',
+      label: 'blabla',
       childNodeIds: ['e1', 'e2', 'e3']
     },
     {
       id: 'six',
-      label: '',
+      label: 'oaaaaaaa',
       childNodeIds: ['f1', 'f2', 'f3']
     }
   ]"
@@ -173,45 +153,16 @@
   </ng-template>
 
   <ng-template #clusterTemplate let-cluster>
+
     <svg:g class="node cluster">
       <svg [attr.width]="cluster.dimension.width + 80" [attr.height]="cluster.dimension.height" y="80"  xmlns="http://www.w3.org/2000/svg">
-        <rect
-          class="modificadorDeEstilosPredefinidos"
-          x="10"
-          y="10"
-          [attr.width]="cluster.dimension.width"
-          height="38"
-          rx="16"
-          ry="16"
-          fill="#2E2E2E"
-        />
-        <rect
-          class="modificadorDeEstilosPredefinidos"
-          x="10"
-          y="29"
-          [attr.width]="cluster.dimension.width"
-          height="19"
-          fill="#2E2E2E"
-        />
-
-        <text
-          [attr.x]="(cluster.dimension.width/2)+10"
-          y="35"
-          fill="#fff"
-          font-size="18"
-          text-anchor="middle"
-          font-family="Lato"
-        >
-          {{ cluster.label}}
-          
-        </text>
 
         <rect
           class="modificadorDeEstilosPredefinidos"
           x="10"
-          y="47"
-          [attr.width]="cluster.dimension.width"
-          [attr.height]="cluster.dimension.height-140"
+          [attr.y]="47+10-10"
+          [attr.width]="cluster.dimension.width+70"
+          [attr.height]="cluster.dimension.height-140-25"
           rx="16"
           ry="16"
           fill="#C5F6B9"
@@ -219,34 +170,71 @@
         <rect
           class="modificadorDeEstilosPredefinidos"
           x="10"
-          y="47"
-          [attr.width]="cluster.dimension.width"
-          [attr.height]="cluster.dimension.height-140-16"
+          [attr.y]="47+10-10"
+          [attr.width]="cluster.dimension.width+70"
+          [attr.height]="cluster.dimension.height-140-16-25"
           fill="#C5F6B9"
         />
+
+        <rect
+        class="modificadorDeEstilosPredefinidos"
+        x="10"
+        [attr.y]="10-10"
+        [attr.width]="cluster.dimension.width+70"
+        [attr.height]="38*1.5"
+        [attr.rx]="16*1.5"
+        [attr.ry]="16*1.5"
+        fill="#2E2E2E"
+      />
+      <rect
+        class="modificadorDeEstilosPredefinidos"
+        x="10"
+        [attr.y]="29"
+        [attr.width]="cluster.dimension.width+70"
+        [attr.height]="19*1.5"
+        fill="#2E2E2E"
+      />
+
+      <text
+        [attr.x]="(cluster.dimension.width+70)/2+10"
+        y="40"
+        fill="#fff"
+        [attr.font-size]="18*1.5"
+        text-anchor="middle"
+        font-family="'Lato', sans-serif"
+      >
+        {{ cluster.label}}
+        
+      </text>
+      
       </svg>
     </svg:g>
-  </ng-template>
 
-  <ng-template #nodeTemplate let-node>
-    <svg:g class="node" >
-      <svg:rect *ngIf="node.dimension.width>20"
-        x="0"
-        [attr.width]="node.dimension.width+20"
-        height="38"
-        fill="#ffffff"
-        stroke="#e3e3e3"
-        rx="16"
-        ry="16"
-      />
-      <svg:text
-        alignment-baseline="central"
-        [attr.x]="20"
-        [attr.y]="node.dimension.height / 2"
-      >
-        {{ node.label }}
-      </svg:text>
-    </svg:g>
+    <ng-template #nodeTemplate let-node>
+      <svg:g class="node" >
+        <svg:rect *ngIf="node.dimension.width>20"
+          [attr.x]="(-(cluster.dimension.width-node.dimension.width)/2)+45"
+          [attr.width]="(cluster.dimension.width)"
+          [attr.height]="38*2"
+          fill="#ffffff"
+          stroke="#e3e3e3"
+          [attr.rx]="16*2"
+          [attr.ry]="16*2"
+        />
+        <svg:text
+          alignment-baseline="central"
+          [attr.x]="(node.dimension.width / 2) + 45"
+          [attr.y]="node.dimension.height / 2"
+          fill="#000000"
+          [attr.font-size]="18*1.5"
+          text-anchor="middle"
+          font-family="'Lato', sans-serif"
+        >
+          {{ node.label }}
+        </svg:text>
+      </svg:g>
+    </ng-template>
+
   </ng-template>
 
 </ngx-graph>
