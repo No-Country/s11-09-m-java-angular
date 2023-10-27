@@ -1,6 +1,5 @@
-import {NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, isDevMode, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {AppComponent} from './app.component';
 import {StoreModule} from '@ngrx/store';
@@ -8,11 +7,14 @@ import {EffectsModule} from '@ngrx/effects';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppRoutingModule} from "./app-routing.module";
 import {NavbarComponent} from "./shared/layouts/navbar/navbar.component";
-import { TreeTestsComponent } from './tree-tests/tree-tests.component';
-import { NgxGraphModule } from '@swimlane/ngx-graph';
-import { TreeTest2Component } from './tree-test2/tree-test2.component';
-import { DiagramModule } from '@syncfusion/ej2-angular-diagrams';
+import {TreeTestsComponent} from './tree-tests/tree-tests.component';
+import {NgxGraphModule} from '@swimlane/ngx-graph';
+import {TreeTest2Component} from './tree-test2/tree-test2.component';
 import {HttpClientModule} from "@angular/common/http";
+
+import {authReducer} from "./auth/store/reducers/auth.reducers";
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {AuthEffects} from "./auth/store/effects/auth.effects";
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -20,25 +22,28 @@ import {HttpClientModule} from "@angular/common/http";
     AppComponent,
     TreeTestsComponent,
     TreeTest2Component
+
   ],
-  imports: [
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    BrowserModule,
-    StoreModule.forRoot({}, {}),
-    EffectsModule.forRoot([]),
-    NgbModule,
+
+  imports: [NgbModule,
     NgxGraphModule,
-    DiagramModule
-  ],
-  imports: [
     AppRoutingModule,
     BrowserModule,
-    StoreModule.forRoot({}, {}),
-    EffectsModule.forRoot([]),
+    StoreModule.forRoot({auth: authReducer}, {}),
+    EffectsModule.forRoot([AuthEffects]),
     NgbModule,
     NavbarComponent,
-    HttpClientModule
+    HttpClientModule,
+    // Instrumentation must be imported after importing StoreModule (config is optional)
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: !isDevMode(), // Restrict extension to log-only mode
+      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
+      trace: false, //  If set to true, will include stack trace for every dispatched action, so you can see it in trace tab jumping directly to that part of code
+      traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
+      connectOutsideZone: true // If set to true, the connection is established outside the Angular zone for better performance
+    }),
+    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()}),
   ],
   providers: [],
   bootstrap: [AppComponent]
