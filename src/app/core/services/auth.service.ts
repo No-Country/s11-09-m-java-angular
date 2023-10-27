@@ -23,7 +23,7 @@ export class AuthService {
 
 
     return this.http.post(path, credentials, {headers}).pipe(
-      tap((res) =>console.log(res))
+      tap((res) => console.log(res))
     );
   }
 
@@ -34,7 +34,7 @@ export class AuthService {
     });
 
     return this.http.post(path, register, {headers}).pipe(
-      tap((res) =>console.log(res))
+      tap((res) => console.log(res))
     );
   }
 

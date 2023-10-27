@@ -1,1 +1,1 @@
-export type Token = { token: string } | null;
+export type Token = string | null;
