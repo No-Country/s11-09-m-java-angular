@@ -1,0 +1,17 @@
+$primary-border-color: #4155A7;
+$border-radius: .75rem;
+$primary-background-color: #F7F6FA;
+$primary-color: #827E88;
+
+
+.form-control {
+  border-color: $primary-border-color;
+  border-radius: .75rem;
+  background-color: $primary-background-color;
+  color: $primary-color;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 0.9375rem; /* 107.143% */
+  letter-spacing: 0.00625rem;
+  padding: .81rem;
+}
