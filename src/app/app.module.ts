@@ -15,6 +15,8 @@ import {HttpClientModule} from "@angular/common/http";
 import {authReducer} from "./auth/store/reducers/auth.reducers";
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {AuthEffects} from "./auth/store/effects/auth.effects";
+import {JwtModule} from "@auth0/angular-jwt";
+import {tokenGetter} from "./core/config/tokenGetter";
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -44,6 +46,12 @@ import {AuthEffects} from "./auth/store/effects/auth.effects";
       connectOutsideZone: true // If set to true, the connection is established outside the Angular zone for better performance
     }),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()}),
+
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+      }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
