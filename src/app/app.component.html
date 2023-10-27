@@ -1,1 +1,125 @@
 <router-outlet></router-outlet>
+<ngx-graph
+  class="chart-container"
+  [view]="[1920, 1080]"
+  [showMiniMap]="true"
+  layout="dagreCluster"
+  [links]="[
+    {
+      id: 'a',
+      source: 'first',
+    target: 'second',
+      label: 'is parent of'
+    }, {
+      id: 'b',
+      source: 'first',
+      target: 'third',
+      label: 'custom label'
+    }
+  ]"
+  [nodes]="[
+    {
+      id: 'first',
+      label: 'A'
+    }, {
+      id: 'second',
+      label: 'B'
+    }, {
+      id: 'third',
+      label: 'C'
+    }
+  ]"
+>
+<ng-template #defsTemplate>
+    <svg:marker
+      id="arrow"
+      viewBox="0 -5 10 10"
+      refX="8"
+      refY="0"
+      markerWidth="4"
+      markerHeight="4"
+      orient="auto"
+    >
+      <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
+    </svg:marker>
+  </ng-template>
+
+  <ng-template #clusterTemplate let-cluster>
+    <svg:g class="node cluster">
+      <svg [attr.width]="cluster.dimension.width + 80" height="400" xmlns="http://www.w3.org/2000/svg">
+        <rect
+          class="modificadorDeEstilosPredefinidos"
+          x="10"
+          y="10"
+          [attr.width]="cluster.dimension.width + 56"
+          height="38"
+          rx="16"
+          ry="16"
+          fill="#2E2E2E"
+        />
+        <rect
+          class="modificadorDeEstilosPredefinidos"
+          x="10"
+          y="29"
+          [attr.width]="cluster.dimension.width + 56"
+          height="19"
+          fill="#2E2E2E"
+        />
+
+        <text
+          x="118"
+          y="35"
+          fill="#fff"
+          font-size="18"
+          text-anchor="middle"
+          font-family="Lato"
+        >
+          {{ cluster.label }}
+        </text>
+
+        <rect
+          class="modificadorDeEstilosPredefinidos"
+          x="10"
+          y="47"
+          [attr.width]="cluster.dimension.width + 56"
+          [attr.height]="cluster.dimension.height"
+          rx="16"
+          ry="16"
+          fill="#D9D9D9"
+        />
+        <rect
+          class="modificadorDeEstilosPredefinidos"
+          x="10"
+          y="47"
+          [attr.width]="cluster.dimension.width + 56"
+          [attr.height]="cluster.dimension.height"
+          fill="#D9D9D9"
+        />
+      </svg>
+    </svg:g>
+  </ng-template>
+
+  <ng-template #nodeTemplate let-node>
+    <svg:g class="node">
+      <svg:rect
+        x="10"
+        [attr.width]="node.dimension.width"
+        height="38"
+        fill="#ffffff"
+        stroke="#e3e3e3"
+        rx="16"
+        ry="16"
+      />
+      <svg:text
+        alignment-baseline="central"
+        [attr.x]="20"
+        [attr.y]="node.dimension.height / 2"
+      >
+        {{ node.label}}
+      </svg:text>
+    </svg:g>
+  </ng-template>
+
+
+
+</ngx-graph>

@@ -9,7 +9,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppRoutingModule} from "./app-routing.module";
 import { TreeTestsComponent } from './tree-tests/tree-tests.component';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
-import { TreeTest2Component } from './tree-test2/tree-test2.component';
 import { DiagramModule } from '@syncfusion/ej2-angular-diagrams';
 
 @NgModule({
@@ -17,7 +16,6 @@ import { DiagramModule } from '@syncfusion/ej2-angular-diagrams';
   declarations: [
     AppComponent,
     TreeTestsComponent,
-    TreeTest2Component
   ],
   imports: [
     BrowserAnimationsModule,

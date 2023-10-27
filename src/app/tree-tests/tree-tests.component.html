@@ -1,95 +1,159 @@
-<p>tree-tests works!</p>
-
-<ngx-graph
+<ngx-graph class="rotate"
   class="chart-container"
   [view]="[1920, 1080]"
   [links]="[
     {
-      id: 'b',
-      source: 'b',
-      target: 'c1',
-      label: 'bc1'
-    },
-    {
-      id: 'x',
-      source: 'b',
-      target: 'c1',
-      label: 'bc1'
-    },
-    {
       id: 'a',
       source: 'a',
-      target: 'b',
-      label: 'ab'
+      target: 'c1',
+      label: 'bc1'
+    },
+    {
+      id: 'c',
+      source: 'a',
+      target: 'a1',
+      label: 'bc1'
     },
     {
       id: 'd',
-      source: 'c2',
-      target: 'c3',
-      label: 'c23'
+      source: 'a',
+      target: 'd1',
+      label: 'bc1'
     },
     {
       id: 'e',
-      source: 'c1',
-      target: 'c2',
-      label: 'c12'
+      source: 'na',
+      target: 'e1',
+      label: 'bc1'
     },
     {
-      id: 'f',
-      source: 'c1',
-      target: 'd',
-      label: 'second link'
+      id: 'e',
+      source: 'na',
+      target: 'f1',
+      label: 'bc1'
     },
     {
-      id: 'g',
-      source: 'first',
-      target: 'e',
-      label: 'x'
-    }
+      id: 'e',
+      source: 'a',
+      target: 'na',
+      label: 'bc1'
+    },
+    {
+      id: 'e',
+      source: 'd1',
+      target: 'b1',
+      label: 'bc1'
+    },
   ]"
   [nodes]="[
     {
       id: 'a',
-      label: 'A',
-    },
-    {
-      id: 'b',
-      label: 'B'
+      label: 'Product thinking',
     },
     {
       id: 'c1',
-      label: 'C1'
+      label: 'estrategia de producto'
     },
     {
       id: 'c2',
-      label: 'C2'
+      label: 'Visión del producto'
     },
     {
       id: 'c3',
-      label: 'C3'
+      label: 'propuesta de valor'
     },
     {
-      id: 'c4',
-      label: 'C4'
+      id: 'b1',
+      label: 'Mvp'
     },
     {
-      id: 'c5',
-      label: 'C5'
+      id: 'b2',
+      label: 'lanzamiento del producto'
     },
     {
-      id: 'd',
-      label: 'D'
+      id: 'a1',
+      label: 'Análisis de uso del producto'
     },
     {
-      id: 'e',
-      label: 'e label ssssssssssssssssssssssssssssssssssss'
-    }
+      id: 'a2',
+      label: 'Retención de clientes'
+    },
+    {
+      id: 'a3',
+      label: 'Pivote del producto'
+    },
+    {
+      id: 'd1',
+      label: 'Análisis de uso del producto'
+    },
+    {
+      id: 'd2',
+      label: 'Retención de clientes'
+    },
+    {
+      id: 'd3',
+      label: 'Pivote del producto'
+    },
+    {
+      id: 'na',
+      label: 'nodo aislado'
+    },
+    {
+      id: 'e1',
+      label: 'Análisis de uso del producto'
+    },
+    {
+      id: 'e2',
+      label: 'Retención de clientes'
+    },
+    {
+      id: 'e3',
+      label: 'Pivote del producto'
+    },
+    {
+      id: 'f1',
+      label: 'Análisis de uso del producto'
+    },
+    {
+      id: 'f2',
+      label: 'Retención de clientes'
+    },
+    {
+      id: 'f3',
+      label: 'Pivote del producto'
+    },
+
   ]"
   [clusters]="[
     {
-      id: 'third',
-      label: 'Tema especifico',
-      childNodeIds: ['c1', 'c2', 'c3', 'c4', 'c5']
+      id: 'one',
+      label: 'Pre lanzamiento',
+      childNodeIds: ['c1', 'c2', 'c3', 'v1']
+    },
+    {
+      id: 'two',
+      label: 'lanzamiento',
+      childNodeIds: ['b1', 'b2'],
+    },
+    {
+      id: 'three',
+      label: 'Post lanzamiento',
+      childNodeIds: ['a1', 'a2', 'a3']
+    },
+    {
+      id: 'four',
+      label: '',
+      childNodeIds: ['d1', 'd2', 'd3']
+    },
+    {
+      id: 'five',
+      label: '',
+      childNodeIds: ['e1', 'e2', 'e3']
+    },
+    {
+      id: 'six',
+      label: '',
+      childNodeIds: ['f1', 'f2', 'f3']
     }
   ]"
   layout="dagreCluster"
@@ -110,12 +174,12 @@
 
   <ng-template #clusterTemplate let-cluster>
     <svg:g class="node cluster">
-      <svg [attr.width]="cluster.dimension.width + 80" height="400" xmlns="http://www.w3.org/2000/svg">
+      <svg [attr.width]="cluster.dimension.width + 80" [attr.height]="cluster.dimension.height" y="80"  xmlns="http://www.w3.org/2000/svg">
         <rect
           class="modificadorDeEstilosPredefinidos"
           x="10"
           y="10"
-          [attr.width]="cluster.dimension.width + 56"
+          [attr.width]="cluster.dimension.width"
           height="38"
           rx="16"
           ry="16"
@@ -125,49 +189,50 @@
           class="modificadorDeEstilosPredefinidos"
           x="10"
           y="29"
-          [attr.width]="cluster.dimension.width + 56"
+          [attr.width]="cluster.dimension.width"
           height="19"
           fill="#2E2E2E"
         />
 
         <text
-          x="118"
+          [attr.x]="(cluster.dimension.width/2)+10"
           y="35"
           fill="#fff"
           font-size="18"
           text-anchor="middle"
           font-family="Lato"
         >
-          {{ cluster.label }}
+          {{ cluster.label}}
+          
         </text>
 
         <rect
           class="modificadorDeEstilosPredefinidos"
           x="10"
           y="47"
-          [attr.width]="cluster.dimension.width + 56"
-          [attr.height]="cluster.dimension.height"
+          [attr.width]="cluster.dimension.width"
+          [attr.height]="cluster.dimension.height-140"
           rx="16"
           ry="16"
-          fill="#D9D9D9"
+          fill="#C5F6B9"
         />
         <rect
           class="modificadorDeEstilosPredefinidos"
           x="10"
           y="47"
-          [attr.width]="cluster.dimension.width + 56"
-          [attr.height]="cluster.dimension.height"
-          fill="#D9D9D9"
+          [attr.width]="cluster.dimension.width"
+          [attr.height]="cluster.dimension.height-140-16"
+          fill="#C5F6B9"
         />
       </svg>
     </svg:g>
   </ng-template>
 
   <ng-template #nodeTemplate let-node>
-    <svg:g class="node">
-      <svg:rect
-        x="10"
-        [attr.width]="node.dimension.width"
+    <svg:g class="node" >
+      <svg:rect *ngIf="node.dimension.width>20"
+        x="0"
+        [attr.width]="node.dimension.width+20"
         height="38"
         fill="#ffffff"
         stroke="#e3e3e3"
@@ -179,30 +244,11 @@
         [attr.x]="20"
         [attr.y]="node.dimension.height / 2"
       >
-        {{ node.label}}
+        {{ node.label }}
       </svg:text>
     </svg:g>
   </ng-template>
 
-  <ng-template #linkTemplate let-link>
-    <svg:g class="edge">
-      <svg:path
-        class="line"
-        stroke-width="2"
-        marker-end="url(#arrow)"
-      ></svg:path>
-      <svg:text class="edge-label" text-anchor="middle">
-        <textPath
-          class="text-path"
-          [attr.href]="'#' + link.id"
-          [style.dominant-baseline]="link.dominantBaseline"
-          startOffset="50%"
-        >
-          {{ link.label }}
-        </textPath>
-      </svg:text>
-    </svg:g>
-  </ng-template>
 </ngx-graph>
 
 <svg:marker
