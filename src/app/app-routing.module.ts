@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {TreeTestsComponent} from './tree-tests/tree-tests.component';
 import {TreeTest2Component} from './tree-test2/tree-test2.component';
+import {AuthGuard} from "./core/guards/auth.guard";
 
 
 const routes: Routes = [
@@ -22,6 +23,11 @@ const routes: Routes = [
   {
     path: 'roadmap',
     loadChildren: () => import('./roadmap/roadmap.module').then((modulo) => modulo.RoadmapModule)
+  },
+  {
+    path: 'profile',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./profile/profile.module').then((modulo) => modulo.ProfileModule)
   },
   /*
   {
