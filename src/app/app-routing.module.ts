@@ -23,6 +23,10 @@ const routes: Routes = [
     path: 'roadmap',
     loadChildren: () => import('./roadmap/roadmap.module').then((modulo) => modulo.RoadmapModule)
   },
+  {
+    path: 'profile',
+    loadChildren: () => import('./profile/profile.module').then((modulo) => modulo.ProfileModule)
+  },
   /*
   {
     path: 'feature',
