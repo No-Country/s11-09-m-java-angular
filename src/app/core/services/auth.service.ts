@@ -10,7 +10,7 @@ import {RegisterModel} from "../model/register.model";
 })
 export class AuthService {
 
-  private apiUrl = env.apiURL;
+  private apiUrl = env.serverUrl;
 
   constructor(private http: HttpClient) {
   }

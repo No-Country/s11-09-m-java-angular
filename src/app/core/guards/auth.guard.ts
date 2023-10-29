@@ -10,7 +10,7 @@ export const AuthGuard: CanActivateFn = (
   Observable<boolean | UrlTree>
   | Promise<boolean | UrlTree>
   | boolean
-  | UrlTree=> {
+  | UrlTree => {
 
   return inject(TokenService).authenticated()
     ? true
