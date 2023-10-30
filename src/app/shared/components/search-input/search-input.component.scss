@@ -6,6 +6,11 @@ input {
   border-color: $border-color;
   background-color: $background-color;
   border-right: 0;
+
+}
+
+.input-group {
+  transition: all 0.3s ease-in-out;
 }
 
 span {
@@ -14,5 +19,6 @@ span {
   border-color: $border-color;
   background-color: $background-color;
 }
+
 
 
