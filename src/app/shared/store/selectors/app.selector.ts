@@ -16,7 +16,7 @@ export const selectAppError = createSelector(
 
 export const selectAppUser = createSelector(
   selectApp,
-  (state: AppState) => state.error
+  (state: AppState) => state.user
 );
 
 export const selectAppTopics = createSelector(
