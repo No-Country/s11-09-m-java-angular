@@ -1,0 +1,12 @@
+.node#first circle {
+  fill: red; /* Color de fondo rojo para el nodo 'first' */
+  stroke: black; /* Borde negro para el nodo 'first' */
+  stroke-width: 2; /* Grosor del borde */
+}
+.node#first rect {
+  fill: red; /* Color de fondo rojo para el nodo 'first' */
+  stroke: black; /* Borde negro para el nodo 'first' */
+  stroke-width: 2; /* Grosor del borde */
+  width: 40px; /* Ancho personalizado del nodo 'first' */
+  height: 40px; /* Alto personalizado del nodo 'first' */
+}
