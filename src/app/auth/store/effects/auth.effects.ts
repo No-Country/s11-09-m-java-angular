@@ -5,6 +5,8 @@ import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {catchError, map, of, switchMap, tap} from "rxjs";
 import {AuthActions} from "../actions/auth.actions";
 import {Router} from "@angular/router";
+import {TokenService} from "../../../core/services/token.service";
+import {AppActions} from "../../../shared/store/actions/app.actions";
 
 
 @Injectable({
@@ -17,7 +19,8 @@ export class AuthEffects {
     private actions$: Actions,
     private store: Store,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private tokenService: TokenService
   ) {
   }
 
@@ -53,9 +56,10 @@ export class AuthEffects {
         tap((action) => {
           localStorage.setItem('token', action.token);
           this.router.navigate(["home"])
-        })
+        }),
+        map((response) => AppActions.loadUser()),
+        catchError((error) => of(AppActions.loadUserError({error: error.message})))
       ),
-    {dispatch: false}
   );
 
   logoutEffect$ = createEffect(

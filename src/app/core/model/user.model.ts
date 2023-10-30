@@ -3,7 +3,8 @@ export interface UserModel {
   username: string,
   lastname: string,
   firstname: string,
+  experience: number,
   //"password": "string",
   //role: "USER",
-  experience: number,
+
 }
