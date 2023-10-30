@@ -1,11 +1,32 @@
 <nav class="navbar mx-lg-3 mx-3">
+
   <app-icon-logo/>
+
   <div class="d-flex justify-content-between align-items-center gap-1 gap-lg-2">
     <a class="btn" routerLink="home">Roadmaps</a>
     <a class="btn" routerLink="#">Contacto</a>
-    <a class="btn btn-primary btn-sm btn-lg" routerLink="auth/login">Log in</a>
-    <a class="btn btn-outline-primary btn-sm btn-lg" routerLink="auth/register">Sign Up</a>
+
+
+    <!--
+    <ng-container *ngIf="isAuthenticated; else notAuthenticated">
+      <div class="w-100">
+      -->
+    <!-- TODO: Al hacer click en el "div" que se expanda (disables los otros para que tome todo el ancho....) -->
+
+    <div class="">
+      <app-search-input [placeholder]="''"/>
+    </div>
+    <!-- </div>-->
+    <app-profile-image/>
   </div>
+  <!--
+      </ng-container>
+      <ng-template #notAuthenticated>
+        <a class="btn btn-primary btn-sm btn-lg" routerLink="auth/login">Log in</a>
+        <a class="btn btn-outline-primary btn-sm btn-lg" routerLink="auth/register">Sign Up</a>
+      </ng-template>
+    </div>
+    -->
 
 </nav>
 

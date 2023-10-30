@@ -1,11 +1,11 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {selectAuthIsLoading} from "../../../auth/store/selectors/auth.selector";
-import {Token} from "../../../core/ui/types/token.type";
 import {selectAppError, selectAppTopics, selectAppUser} from "../selectors/app.selector";
 import {AppActions} from "../actions/app.actions";
 import {TopicModel} from "../../../core/model/topic.model";
 import {Store} from "@ngrx/store";
+import {UserModel} from "../../../core/model/user.model";
 
 
 @Injectable({
@@ -29,12 +29,12 @@ export class AppFacade {
     this.store.dispatch(AppActions.loadTopics())
   }
 
-  getTopics() :Observable<TopicModel[]> {
+  getTopics(): Observable<TopicModel[]> {
     return this.store.select(selectAppTopics)
   }
 
 
-  getUser(): Observable<Token> {
+  getUser(): Observable<UserModel | null> {
     return this.store.select(selectAppUser)
   }
 

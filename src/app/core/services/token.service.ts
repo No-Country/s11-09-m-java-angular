@@ -11,11 +11,9 @@ export class TokenService {
   constructor(private jwtHelper: JwtHelperService, private localStorageService: LocalStorageService) {
   }
 
-  decodeToken(token: string): any {
+  decodeToken(token: string): string | null {
     try {
-      console.log(token)
-      console.log(this.jwtHelper.decodeToken(token))
-      return this.jwtHelper.decodeToken(token);
+      return this.jwtHelper.decodeToken(token).sub;
     } catch (error) {
       console.error('Error decoding token:', error);
       return null;
