@@ -12,6 +12,9 @@ import {IconSearchComponent} from "../icon-search/icon-search.component";
 })
 export class SearchInputComponent {
   @Input() placeholder!: string;
+  @Input() expandable: boolean = false;
+
   value: string = '';
+
 
 }
