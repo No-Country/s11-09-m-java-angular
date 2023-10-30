@@ -25,7 +25,6 @@ public class Topic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
     @NotNull(message = "name field is required")
     private String name;
     @Column( columnDefinition = "TEXT")
@@ -40,7 +39,8 @@ public class Topic {
     private List<TopicResource> resources;
     @Enumerated(EnumType.STRING)
     private ExperienceLevel experienceLevel;
-
+    @Enumerated(EnumType.STRING)
+    private TopicRole topicRole;
 
     public void addResource(TopicResource resource){
         if(resources==null){
