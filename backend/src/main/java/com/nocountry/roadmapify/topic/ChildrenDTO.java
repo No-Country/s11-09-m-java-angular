@@ -17,4 +17,5 @@ public class ChildrenDTO extends RepresentationModel<ChildrenDTO> {
     private String name;
     private String description;
     private ExperienceLevel experienceLevel;
+    private String topicRole;
 }

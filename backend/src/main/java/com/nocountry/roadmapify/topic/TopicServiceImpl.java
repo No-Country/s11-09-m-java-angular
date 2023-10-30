@@ -25,6 +25,7 @@ public class TopicServiceImpl implements TopicService{
         List<TopicResponse> responses = new ArrayList<>(topics.size());
         for (Topic topic : topics) {
             TopicResponse response = modelMapper.map(topic,TopicResponse.class);
+
             response.add( //to links of RepresentationModel
                     WebMvcLinkBuilder
                             .linkTo(WebMvcLinkBuilder.methodOn(TopicController.class) // method on controller
@@ -106,6 +107,12 @@ public class TopicServiceImpl implements TopicService{
 
 
     }
+    public String setRole(Topic topic){
+        if (topic.getParent() != null){
+            return topic.getTopicRole().getName().concat(":"+topic.getParent().getName().toLowerCase());
+        }
+        return topic.getTopicRole().getName();
+    }
 
     @Override
     public void deleteTopicById(Long id) {
@@ -119,16 +126,21 @@ public class TopicServiceImpl implements TopicService{
     private TopicResponse makeTopicResponse(Topic topic){
         TopicResponse response = modelMapper.map(topic,TopicResponse.class);
         if(topic.getParent()!=null){
+            response.setTopicRole(setRole(topic));
             response.setParent(modelMapper.map(topic.getParent(),ParentDTO.class));
         }
         for (Topic child : topicRepository.findAllByParentId(topic.getId())) {
             ChildrenDTO childDto = modelMapper.map(child, ChildrenDTO.class);
+            childDto.setTopicRole(setRole(child));
             response.addChild(childDto);
             childDto.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TopicController.class).getById(child.getId())).withSelfRel());
         }
 
+
         return response;
     }
+
+
 
 
 }

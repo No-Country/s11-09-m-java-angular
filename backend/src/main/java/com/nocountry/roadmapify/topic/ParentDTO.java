@@ -20,6 +20,7 @@ public class ParentDTO {
     private Boolean isRoot;
     private List<TopicResourceDTO> resources;
     private ExperienceLevel experienceLevel;
+    private String topicRole;
 
     public void addResource(TopicResourceDTO resource){
         if(resources==null){

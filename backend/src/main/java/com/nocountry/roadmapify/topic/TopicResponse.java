@@ -24,6 +24,7 @@ public class TopicResponse extends RepresentationModel<TopicResponse> {
     private List<ChildrenDTO> children;
     private List<TopicResourceDTO> resources;
     private ExperienceLevel experienceLevel;
+    private String topicRole;
 
     public void addChild(ChildrenDTO child){
         if(children ==null){

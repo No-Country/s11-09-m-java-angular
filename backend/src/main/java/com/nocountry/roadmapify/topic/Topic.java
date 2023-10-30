@@ -24,7 +24,6 @@ public class Topic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @NotNull(message = "name field is required")
     private String name;
     @Column( columnDefinition = "TEXT")
@@ -63,6 +62,7 @@ public class Topic {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
+
 
     @Override
     public String toString() {
