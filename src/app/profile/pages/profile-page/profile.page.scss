@@ -1,0 +1,10 @@
+.row.overflow-x-scroll {
+  display: flex !important;
+  overflow-x: auto !important;;
+  white-space: nowrap !important;;
+}
+
+.row.overflow-x-scroll .col {
+  flex: 0 0 auto !important;;
+  white-space: normal !important;;
+}

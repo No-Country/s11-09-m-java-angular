@@ -1,0 +1,19 @@
+@import "palette";
+
+.btn {
+  padding-top: .81rem;
+  padding-bottom: .81rem;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 0.9375rem;
+  letter-spacing: 0.00625rem;
+  border-radius:.75rem
+}
+
+.btn-primary {
+  background: map-get($theme-colors, "primary");
+  border-color: map-get($theme-colors, "primary");
+  color: #FFF;
+
+}
