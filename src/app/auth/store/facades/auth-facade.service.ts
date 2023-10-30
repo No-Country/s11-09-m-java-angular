@@ -39,8 +39,4 @@ export class AuthFacade {
   }
 
 
-  /*
-  * En caso de necesitar un facade
-  * */
-
 }
