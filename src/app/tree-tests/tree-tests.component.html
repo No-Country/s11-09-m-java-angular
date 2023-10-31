@@ -1,10 +1,23 @@
-<ngx-graph class="rotate"
+<ngx-graph
+  class="rotate"
   class="chart-container"
   [draggingEnabled]="false"
   [autoZoom]="true"
   [zoomSpeed]="0.05"
   [view]="[1920, 1080]"
   [links]="[
+    {
+      id: 'e',
+      source: 'e1',
+      target: 'a',
+      label: 'bc1'
+    },
+    {
+      id: 'e',
+      source: 'f1',
+      target: 'a',
+      label: 'bc1'
+    },
     {
       id: 'c',
       source: 'a',
@@ -19,28 +32,10 @@
     },
     {
       id: 'e',
-      source: 'na',
-      target: 'e1',
-      label: 'bc1'
-    },
-    {
-      id: 'e',
-      source: 'na',
-      target: 'f1',
-      label: 'bc1'
-    },
-    {
-      id: 'e',
-      source: 'a',
-      target: 'na',
-      label: 'bc1'
-    },
-    {
-      id: 'e',
       source: 'd1',
       target: 'b1',
       label: 'bc1'
-    },
+    }
   ]"
   [nodes]="[
     {
@@ -153,16 +148,19 @@
   </ng-template>
 
   <ng-template #clusterTemplate let-cluster>
-
     <svg:g class="node cluster">
-      <svg [attr.width]="cluster.dimension.width + 80" [attr.height]="cluster.dimension.height" y="80"  xmlns="http://www.w3.org/2000/svg">
-
+      <svg
+        [attr.width]="cluster.dimension.width + 80"
+        [attr.height]="cluster.dimension.height"
+        y="80"
+        xmlns="http://www.w3.org/2000/svg"
+      >
         <rect
           class="modificadorDeEstilosPredefinidos"
           x="10"
-          [attr.y]="47+10-10"
-          [attr.width]="cluster.dimension.width+70"
-          [attr.height]="cluster.dimension.height-140-25"
+          [attr.y]="47 + 10 - 10"
+          [attr.width]="cluster.dimension.width + 70"
+          [attr.height]="cluster.dimension.height - 140 - 25"
           rx="16"
           ry="16"
           fill="#C5F6B9"
@@ -170,63 +168,62 @@
         <rect
           class="modificadorDeEstilosPredefinidos"
           x="10"
-          [attr.y]="47+10-10"
-          [attr.width]="cluster.dimension.width+70"
-          [attr.height]="cluster.dimension.height-140-16-25"
+          [attr.y]="47 + 10 - 10"
+          [attr.width]="cluster.dimension.width + 70"
+          [attr.height]="cluster.dimension.height - 140 - 16 - 25"
           fill="#C5F6B9"
         />
 
         <rect
-        class="modificadorDeEstilosPredefinidos"
-        x="10"
-        [attr.y]="10-10"
-        [attr.width]="cluster.dimension.width+70"
-        [attr.height]="38*1.5"
-        [attr.rx]="16*1.5"
-        [attr.ry]="16*1.5"
-        fill="#2E2E2E"
-      />
-      <rect
-        class="modificadorDeEstilosPredefinidos"
-        x="10"
-        [attr.y]="29"
-        [attr.width]="cluster.dimension.width+70"
-        [attr.height]="19*1.5"
-        fill="#2E2E2E"
-      />
+          class="modificadorDeEstilosPredefinidos"
+          x="10"
+          [attr.y]="10 - 10"
+          [attr.width]="cluster.dimension.width + 70"
+          [attr.height]="38 * 1.5"
+          [attr.rx]="16 * 1.5"
+          [attr.ry]="16 * 1.5"
+          fill="#2E2E2E"
+        />
+        <rect
+          class="modificadorDeEstilosPredefinidos"
+          x="10"
+          [attr.y]="29"
+          [attr.width]="cluster.dimension.width + 70"
+          [attr.height]="19 * 1.5"
+          fill="#2E2E2E"
+        />
 
-      <text
-        [attr.x]="(cluster.dimension.width+70)/2+10"
-        y="40"
-        fill="#fff"
-        [attr.font-size]="18*1.5"
-        text-anchor="middle"
-        font-family="'Lato', sans-serif"
-      >
-        {{ cluster.label}}
-        
-      </text>
-      
+        <text
+          [attr.x]="(cluster.dimension.width + 70) / 2 + 10"
+          y="40"
+          fill="#fff"
+          [attr.font-size]="18 * 1.5"
+          text-anchor="middle"
+          font-family="'Lato', sans-serif"
+        >
+          {{ cluster.label }}
+        </text>
       </svg>
     </svg:g>
 
     <ng-template #nodeTemplate let-node>
-      <svg:g class="node" >
-        <svg:rect *ngIf="node.dimension.width>20"
-          [attr.x]="(-(cluster.dimension.width-node.dimension.width)/2)+45"
-          [attr.width]="(cluster.dimension.width)"
-          [attr.height]="38*2"
+      <svg:g class="node">
+        <svg:rect
+          *ngIf="node.dimension.width > 20"
+          [attr.x]="-(cluster.dimension.width - node.dimension.width) / 2 + 45"
+          [attr.width]="cluster.dimension.width"
+          [attr.height]="38 * 2"
           fill="#ffffff"
           stroke="#e3e3e3"
-          [attr.rx]="16*2"
-          [attr.ry]="16*2"
+          [attr.rx]="16 * 2"
+          [attr.ry]="16 * 2"
         />
         <svg:text
           alignment-baseline="central"
-          [attr.x]="(node.dimension.width / 2) + 45"
+          [attr.x]="node.dimension.width / 2 + 45"
           [attr.y]="node.dimension.height / 2"
           fill="#000000"
-          [attr.font-size]="18*1.5"
+          [attr.font-size]="18 * 1.5"
           text-anchor="middle"
           font-family="'Lato', sans-serif"
         >
@@ -234,9 +231,7 @@
         </svg:text>
       </svg:g>
     </ng-template>
-
   </ng-template>
-
 </ngx-graph>
 
 <svg:marker
