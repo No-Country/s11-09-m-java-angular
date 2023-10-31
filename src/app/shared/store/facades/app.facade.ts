@@ -1,11 +1,18 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {selectAuthIsLoading} from "../../../auth/store/selectors/auth.selector";
-import {selectAppError, selectAppRoleSelected, selectAppRoles, selectAppUser} from "../selectors/app.selector";
+import {
+  selectAppError,
+  selectAppRoles,
+  selectAppRoleSelected,
+  selectAppSkillsByRoleSelected,
+  selectAppUser
+} from "../selectors/app.selector";
 import {AppActions} from "../actions/app.actions";
 import {RoleModel} from "../../../core/model/role.model";
 import {Store} from "@ngrx/store";
 import {UserModel} from "../../../core/model/user.model";
+import {SkillModel} from "../../../core/model/skill.model";
 
 
 @Injectable({
@@ -34,7 +41,8 @@ export class AppFacade {
   }
 
   selectRole(roleSelected: RoleModel): void {
-    return this.store.dispatch(AppActions.selectRole({roleSelected: roleSelected}))
+    this.store.dispatch(AppActions.selectRole({roleSelected: roleSelected}))
+
   }
 
   loadSkills(): void {
@@ -43,6 +51,10 @@ export class AppFacade {
 
   getSelectedRole(): Observable<RoleModel | null> {
     return this.store.select(selectAppRoleSelected)
+  }
+
+  getSkillsBySelectedRole(): Observable<SkillModel[]> {
+    return this.store.select(selectAppSkillsByRoleSelected)
   }
 
 

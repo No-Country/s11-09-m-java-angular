@@ -7,11 +7,8 @@ import {EffectsModule} from '@ngrx/effects';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppRoutingModule} from "./app-routing.module";
 import {NavbarComponent} from "./shared/layouts/navbar/navbar.component";
-import {TreeTestsComponent} from './tree-tests/tree-tests.component';
 import {NgxGraphModule} from '@swimlane/ngx-graph';
-import {TreeTest2Component} from './tree-test2/tree-test2.component';
 import {HttpClientModule} from "@angular/common/http";
-
 import {authReducer} from "./auth/store/reducers/auth.reducers";
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {AuthEffects} from "./auth/store/effects/auth.effects";
@@ -24,8 +21,6 @@ import {AppEffects} from "./shared/store/effects/app.effects";
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
     AppComponent,
-    TreeTestsComponent,
-    TreeTest2Component
 
   ],
 
