@@ -1,17 +1,19 @@
-import {TopicModel} from "../../core/model/topic.model";
+import {RoleModel} from "../../core/model/role.model";
 import {UserModel} from "../../core/model/user.model";
 
 export interface AppState {
   isLoading: boolean;
-  topics: TopicModel[];
+  roles: RoleModel[];
   user: UserModel | null;
+  roleSelected: RoleModel | null;
   error: string | null;
 }
 
 
 export const INITIAL_STATE: AppState = {
   isLoading: false,
-  topics: [],
+  roles: [],
   user: null,
+  roleSelected: null,
   error: null
 }

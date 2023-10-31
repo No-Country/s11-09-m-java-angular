@@ -1,9 +1,9 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {selectAuthIsLoading} from "../../../auth/store/selectors/auth.selector";
-import {selectAppError, selectAppTopics, selectAppUser} from "../selectors/app.selector";
+import {selectAppError, selectAppRoleSelected, selectAppRoles, selectAppUser} from "../selectors/app.selector";
 import {AppActions} from "../actions/app.actions";
-import {TopicModel} from "../../../core/model/topic.model";
+import {RoleModel} from "../../../core/model/role.model";
 import {Store} from "@ngrx/store";
 import {UserModel} from "../../../core/model/user.model";
 
@@ -29,13 +29,26 @@ export class AppFacade {
     this.store.dispatch(AppActions.loadTopics())
   }
 
-  getTopics(): Observable<TopicModel[]> {
-    return this.store.select(selectAppTopics)
+  getTopics(): Observable<RoleModel[]> {
+    return this.store.select(selectAppRoles)
+  }
+
+  selectRole(roleSelected: RoleModel): void {
+    return this.store.dispatch(AppActions.selectRole({roleSelected: roleSelected}))
+  }
+
+  loadSkills(): void {
+    return this.store.dispatch(AppActions.loadSkills())
+  }
+
+  getSelectedRole(): Observable<RoleModel | null> {
+    return this.store.select(selectAppRoleSelected)
   }
 
 
   getUser(): Observable<UserModel | null> {
     return this.store.select(selectAppUser)
   }
+
 
 }

@@ -1,9 +1,11 @@
 import {Injectable} from '@angular/core';
 import {env} from "../../../environments/environment";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {map, Observable} from "rxjs";
-import {TopicModel} from "../model/topic.model";
+import {HttpClient} from "@angular/common/http";
+import {map, Observable, shareReplay} from "rxjs";
+import {RoleModel} from "../model/role.model";
 import {TopicResponseDTO} from "./dto/TopicResponseDTO";
+import {SkillModel} from "../model/skill.model";
+import {TopicsModel} from "../model/topics.model";
 
 @Injectable({
   providedIn: 'root'
@@ -15,24 +17,61 @@ export class TopicsService {
   constructor(private http: HttpClient) {
   }
 
-  getAllTopics(): Observable<TopicModel[]> {
-    const path = this.apiUrl + 'topics/all';
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
+  getAllRoles(): Observable<RoleModel[]> {
+    const path = `${this.apiUrl}topics/all`;
 
-    return this.http.get<TopicResponseDTO[]>(path, {headers}).pipe(
+    return this.http.get<TopicResponseDTO[]>(path).pipe(
       map((response: TopicResponseDTO[]) => {
-        return response.map(item => {
-          return {
+        return response
+          .filter(item => item.isRoot)
+          .map(({name, description, experienceLevel, resources, links}) => ({
             id: 0,
-            name: item.name,
-            description: item.description,
-            experienceLevel: item.experienceLevel,
-            resources: item.resources
-          } as TopicModel;
-        });
-      })
+            name,
+            description,
+            experienceLevel,
+            resources,
+            skills: [],
+            link: links.find(link => link.rel === 'self')?.href
+          } as RoleModel));
+      }),
+      shareReplay() // Comparte la respuesta entre suscripciones
+    );
+  }
+
+  getAllSkillsByRole(role: RoleModel): Observable<SkillModel[]> {
+    if (!role.link) {
+      throw new Error('No role link present');
+    }
+
+    const path = role.link;
+
+    return this.http.get<TopicResponseDTO>(path).pipe(
+      map((response: TopicResponseDTO) => {
+        return response.children
+          .map(({name, description, experienceLevel, _links}) => ({
+            id: 0,
+            name,
+            description,
+            experienceLevel,
+            topics: [],
+            link: _links.self.href
+          } as SkillModel));
+      }),
+      shareReplay()
+    );
+  }
+
+  getAllTopicsBySkill(skill: SkillModel): Observable<TopicsModel[]> {
+    const path = skill.link;
+    return this.http.get<TopicResponseDTO>(path).pipe(
+      map((response: TopicResponseDTO) => {
+        return response.children
+          .map(({name, description}) => ({
+            name,
+            description,
+          } as TopicsModel));
+      }),
+      shareReplay()
     );
   }
 

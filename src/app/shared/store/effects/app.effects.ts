@@ -2,10 +2,12 @@ import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {Store} from "@ngrx/store";
 import {Router} from "@angular/router";
-import {catchError, map, of, switchMap} from "rxjs";
+import {catchError, map, merge, of, switchMap, withLatestFrom} from "rxjs";
 import {TopicsService} from "../../../core/services/topics.service";
 import {AppActions} from "../actions/app.actions";
 import {UserService} from "../../../core/services/user.service";
+import {selectAppRoleSelected} from "../selectors/app.selector";
+import {SkillModel} from "../../../core/model/skill.model";
 
 
 @Injectable({
@@ -24,13 +26,13 @@ export class AppEffects {
   }
 
   // noinspection TypeScriptValidateTypes
-  loadTopicsEffect$ = createEffect(() =>
+  loadRoleEffect$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.loadTopics),
       switchMap((action) =>
-        this.topicsService.getAllTopics().pipe(
-          map((response) => AppActions.loadTopicsSuccess({topics: response})),
-          catchError((error) => of(AppActions.loadTopicsError({error: error.message})))
+        this.topicsService.getAllRoles().pipe(
+          map((response) => AppActions.loadRoleSuccess({roles: response})),
+          catchError((error) => of(AppActions.loadRoleError({error: error.message})))
         )
       )
     )
@@ -45,6 +47,45 @@ export class AppEffects {
           catchError((error) => of(AppActions.loadTopicsError({error: error.message})))
         )
       )
+    )
+  );
+
+  // noinspection TypeScriptValidateTypes
+  // Efecto para cargar habilidades (skills)
+  loadSkillsEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.loadSkills),
+      withLatestFrom(this.store.select(selectAppRoleSelected)),
+      switchMap(([action, selectedRole]) => {
+        if (!selectedRole) {
+          console.log("Entre al null");
+          return of(AppActions.loadSkillsError({error: 'Selected role is not defined'}));
+        }
+        return this.topicsService.getAllSkillsByRole(selectedRole).pipe(
+          map((response) => AppActions.loadSkillsSuccess({skills: response})),
+          catchError((error) => {
+              console.log(error)
+              return of(AppActions.loadSkillsError({error: error.message}))
+            }
+          ));
+      })
+    )
+  );
+
+// Efecto para cargar temas (topics) después de la carga de habilidades (skills)
+  loadTopicsAfterSkillsEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AppActions.loadSkillsSuccess),
+      switchMap((action: { skills: SkillModel[] }) => {
+        const skills = action.skills;
+        const observables = skills.map(skill => {
+          return this.topicsService.getAllTopicsBySkill(skill).pipe(
+            map(topics => AppActions.loadTopicsSuccess({topics, skill})),
+            catchError(error => of(AppActions.loadTopicsError({error}))
+            ));
+        });
+        return merge(...observables); // Combine observables into one
+      })
     )
   );
 
