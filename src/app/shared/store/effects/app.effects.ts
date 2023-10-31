@@ -84,7 +84,7 @@ export class AppEffects {
             catchError(error => of(AppActions.loadTopicsError({error}))
             ));
         });
-        return merge(...observables); // Combine observables into one
+        return merge(...observables);
       })
     )
   );

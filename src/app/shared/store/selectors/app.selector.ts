@@ -1,5 +1,6 @@
 import {createFeatureSelector, createSelector} from "@ngrx/store";
 import {AppState} from "../app.state";
+import {SkillModel} from "../../../core/model/skill.model";
 
 
 export const selectApp = createFeatureSelector<AppState>('app');
@@ -28,5 +29,13 @@ export const selectAppRoleSelected = createSelector(
   selectApp,
   (state: AppState) => state.roleSelected
 );
+
+export const selectAppSkillsByRoleSelected = createSelector(
+  selectApp,
+  (state: AppState) => state.roleSelected ? state.roleSelected.skills : []
+);
+
+
+
 
 
