@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {CardRoleComponent} from "../../../shared/components/card-role/card-role.component";
 import {RouterLink} from "@angular/router";
-import {TopicModel} from "../../../core/model/topic.model";
+import {RoleModel} from "../../../core/model/role.model";
 import {AppFacade} from "../../../shared/store/facades/app.facade";
 import {Observable} from "rxjs";
 
@@ -14,12 +14,16 @@ import {Observable} from "rxjs";
   styleUrls: ['./role-deck.component.scss']
 })
 export class RoleDeckComponent implements OnInit {
-  roles$?: Observable<TopicModel[]>;
+  roles$?: Observable<RoleModel[]>;
 
   constructor(private appFacade: AppFacade) {
   }
 
   ngOnInit(): void {
     this.roles$ = this.appFacade.getTopics();
+  }
+
+  onRoleClick(role: RoleModel) {
+    this.appFacade.selectRole(role)
   }
 }

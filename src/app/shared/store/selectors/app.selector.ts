@@ -19,9 +19,14 @@ export const selectAppUser = createSelector(
   (state: AppState) => state.user
 );
 
-export const selectAppTopics = createSelector(
+export const selectAppRoles = createSelector(
   selectApp,
-  (state: AppState) => state.topics
+  (state: AppState) => state.roles
+);
+
+export const selectAppRoleSelected = createSelector(
+  selectApp,
+  (state: AppState) => state.roleSelected
 );
 
 
