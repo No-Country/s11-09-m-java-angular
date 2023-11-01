@@ -18,7 +18,7 @@ export class TopicsService {
   }
 
   getAllRoles(): Observable<RoleModel[]> {
-    const path = `${this.apiUrl}topics/all`;
+    const path = `${this.apiUrl}topics`;
 
     return this.http.get<TopicResponseDTO[]>(path).pipe(
       map((response: TopicResponseDTO[]) => {
@@ -39,22 +39,18 @@ export class TopicsService {
   }
 
   getAllSkillsByRole(role: RoleModel): Observable<SkillModel[]> {
-    if (!role.link) {
-      throw new Error('No role link present');
-    }
+    const path = `${this.apiUrl}topics/name/${role.name}`;
 
-    const path = role.link;
 
     return this.http.get<TopicResponseDTO>(path).pipe(
       map((response: TopicResponseDTO) => {
         return response.children
-          .map(({name, description, experienceLevel, _links}) => ({
+          .map(({name, description, experienceLevel}) => ({
             id: 0,
             name,
             description,
             experienceLevel,
             topics: [],
-            link: _links.self.href
           } as SkillModel));
       }),
       shareReplay()
@@ -62,7 +58,9 @@ export class TopicsService {
   }
 
   getAllTopicsBySkill(skill: SkillModel): Observable<TopicsModel[]> {
-    const path = skill.link;
+
+    const path = `${this.apiUrl}topics/name/${skill.name}`;
+
     return this.http.get<TopicResponseDTO>(path).pipe(
       map((response: TopicResponseDTO) => {
         return response.children

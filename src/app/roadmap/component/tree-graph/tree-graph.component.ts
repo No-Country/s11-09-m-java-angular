@@ -1,7 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Edge, NgxGraphModule} from "@swimlane/ngx-graph";
 import {ClusterNode, Node} from "@swimlane/ngx-graph/lib/models/node.model";
 import {AsyncPipe, CommonModule, NgForOf} from "@angular/common";
+import {GraphService} from "../../../core/services/graph.service";
 
 //import { NgxGraphModule } from '@swimlane/ngx-graph'
 
@@ -19,7 +20,7 @@ export class TreeGraphComponent implements OnInit {
 
   draggingEnabled: boolean = false;
 
-  @Input() nodes!: Node[][]
+  nodes: Node[][] = []
   clusters: ClusterNode[] = []
   clusterCounter = 0;
   nodeVoidCounter = 0;
@@ -29,6 +30,13 @@ export class TreeGraphComponent implements OnInit {
     clusters: [],
     links: []
   }
+
+
+  constructor(private graphService: GraphService) {
+
+
+  }
+
 
   getGraphData() {
 
@@ -134,7 +142,13 @@ export class TreeGraphComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getGraphData()
+
+    this.graphService.getNodeData().subscribe(
+      value => {
+        this.nodes = value;
+        this.getGraphData()
+      }
+    )
   }
 
 

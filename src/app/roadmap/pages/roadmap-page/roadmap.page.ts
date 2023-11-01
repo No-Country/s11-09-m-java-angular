@@ -4,8 +4,6 @@ import {AppFacade} from "../../../shared/store/facades/app.facade";
 import {RoleModel} from "../../../core/model/role.model";
 import {TreeTestsComponent} from "../../component/tree-tests/tree-tests.component";
 import {TreeGraphComponent} from "../../component/tree-graph/tree-graph.component";
-import {GraphService} from "../../../core/services/graph.service";
-import {Node} from "@swimlane/ngx-graph/lib/models/node.model";
 
 
 @Component({
@@ -19,9 +17,8 @@ export class RoadmapPage implements OnInit {
 
   roleSelected: RoleModel | null = null;
   isLoading: boolean = true;
-  nodes: Node[][] = [[]]
 
-  constructor(private graphService: GraphService, private appFacade: AppFacade) {
+  constructor(private appFacade: AppFacade) {
   }
 
 
@@ -41,14 +38,6 @@ export class RoadmapPage implements OnInit {
       }
     });
 
-
-    this.graphService.getNodeData().subscribe(
-      value => {
-        //this.node = value;
-        console.log('nodeData', value[0])
-        this.nodes = value;
-      }
-    )
 
   }
 }

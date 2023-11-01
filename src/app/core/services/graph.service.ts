@@ -15,20 +15,6 @@ export class GraphService {
     this.skills$ = this.appFacade.getSkillsBySelectedRole()
   }
 
-  private mapToNodesTopics(skill: SkillModel): Node[] {
-    return skill.topics.map((topic, id) => ({
-      id: topic.name + id, // Genera un ID automático, puedes implementar esta función
-      label: topic.name
-    }));
-  }
-
-  private mapToNodesSkill(skill: SkillModel): Node {
-    return {
-      id: skill.link,
-      label: skill.name
-    };
-  }
-
   getNodeData(): Observable<Node[][]> {
     return this.skills$.pipe(
       map(skills => {
@@ -45,6 +31,20 @@ export class GraphService {
         return nodes.filter(value => value.length > 0);
       })
     );
+  }
+
+  private mapToNodesTopics(skill: SkillModel): Node[] {
+    return skill.topics.map((topic, id) => ({
+      id: topic.name + id, // Genera un ID automático, puedes implementar esta función
+      label: topic.name
+    }));
+  }
+
+  private mapToNodesSkill(skill: SkillModel): Node {
+    return {
+      id: skill.name,
+      label: skill.name
+    };
   }
 
 

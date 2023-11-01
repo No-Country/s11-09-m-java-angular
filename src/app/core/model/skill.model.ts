@@ -7,7 +7,7 @@ export interface SkillModel {
   experienceLevel: string,
   topics: TopicsModel[],
   //"topicRole": "label:backend",
-  link: string
+//  link: string
 }
 
 
