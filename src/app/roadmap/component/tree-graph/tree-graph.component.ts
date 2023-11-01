@@ -147,8 +147,7 @@ export class TreeGraphComponent implements OnInit {
       value => {
         this.nodes = value;
         this.getGraphData()
-      }
-    )
+      })
   }
 
 

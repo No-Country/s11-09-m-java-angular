@@ -2,13 +2,15 @@ import {INITIAL_STATE} from "../app.state";
 import {createReducer, on} from "@ngrx/store";
 import {AppActions} from "../actions/app.actions";
 import {
+  handleFinishLoad,
   handleInitLoad,
+  handleRoleLoadSuccess,
   handleRoleSelected,
   handleSkillsLoadSuccess,
   handleTopicsLoadFailure,
-  handleRoleLoadSuccess,
+  handleTopicsLoadSuccess,
   handleUserLoadFailure,
-  handleUserLoadSuccess, handleTopicsLoadSuccess
+  handleUserLoadSuccess
 } from "./handler/app.handlers";
 
 export const appReducer = createReducer(
@@ -30,5 +32,6 @@ export const appReducer = createReducer(
   on(AppActions.loadTopics, handleInitLoad),
   on(AppActions.loadTopicsSuccess, handleTopicsLoadSuccess),
   on(AppActions.loadTopicsError, handleTopicsLoadFailure),
+  on(AppActions.setFinishLoading, handleFinishLoad),
 );
 

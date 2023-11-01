@@ -6,7 +6,7 @@ import {
   selectAppRoles,
   selectAppRoleSelected,
   selectAppSkillsByRoleSelected,
-  selectAppUser
+  selectAppUser, selectRenderGraph
 } from "../selectors/app.selector";
 import {AppActions} from "../actions/app.actions";
 import {RoleModel} from "../../../core/model/role.model";
@@ -60,6 +60,10 @@ export class AppFacade {
 
   getUser(): Observable<UserModel | null> {
     return this.store.select(selectAppUser)
+  }
+
+  getRenderGraph(): Observable<boolean> {
+    return this.store.select(selectRenderGraph)
   }
 
 

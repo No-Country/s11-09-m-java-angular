@@ -7,6 +7,7 @@ export interface AppState {
   user: UserModel | null;
   roleSelected: RoleModel | null;
   error: string | null;
+  renderGraph: boolean;
 }
 
 
@@ -15,5 +16,6 @@ export const INITIAL_STATE: AppState = {
   roles: [],
   user: null,
   roleSelected: null,
-  error: null
+  error: null,
+  renderGraph: false
 }

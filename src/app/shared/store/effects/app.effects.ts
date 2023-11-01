@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {Store} from "@ngrx/store";
 import {Router} from "@angular/router";
-import {catchError, map, merge, of, switchMap, withLatestFrom} from "rxjs";
+import {catchError, concat, map, of, switchMap, withLatestFrom} from "rxjs";
 import {TopicsService} from "../../../core/services/topics.service";
 import {AppActions} from "../actions/app.actions";
 import {UserService} from "../../../core/services/user.service";
@@ -16,15 +16,6 @@ import {SkillModel} from "../../../core/model/skill.model";
 export class AppEffects {
   // noinspection TypeScriptValidateTypes
 
-  constructor(
-    private actions$: Actions,
-    private store: Store,
-    private topicsService: TopicsService,
-    private userService: UserService,
-    private router: Router,
-  ) {
-  }
-
   // noinspection TypeScriptValidateTypes
   loadRoleEffect$ = createEffect(() =>
     this.actions$.pipe(
@@ -37,7 +28,6 @@ export class AppEffects {
       )
     )
   );
-
   loadUserEffect$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.loadUser),
@@ -49,8 +39,6 @@ export class AppEffects {
       )
     )
   );
-
-  // noinspection TypeScriptValidateTypes
   // Efecto para cargar habilidades (skills)
   loadSkillsEffect$ = createEffect(() =>
     this.actions$.pipe(
@@ -72,7 +60,7 @@ export class AppEffects {
     )
   );
 
-// Efecto para cargar temas (topics) después de la carga de habilidades (skills)
+  // noinspection TypeScriptValidateTypes
   loadTopicsAfterSkillsEffect$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AppActions.loadSkillsSuccess),
@@ -80,14 +68,23 @@ export class AppEffects {
         const skills = action.skills;
         const observables = skills.map(skill => {
           return this.topicsService.getAllTopicsBySkill(skill).pipe(
-            map(topics => AppActions.loadTopicsSuccess({topics, skill})),
-            catchError(error => of(AppActions.loadTopicsError({error}))
-            ));
+            map(topics => AppActions.loadTopicsSuccess({topics, skill}))
+          );
         });
-        return merge(...observables);
+        return concat(...observables, [AppActions.setFinishLoading()]);
       })
     )
   );
+
+
+  constructor(
+    private actions$: Actions,
+    private store: Store,
+    private topicsService: TopicsService,
+    private userService: UserService,
+    private router: Router,
+  ) {
+  }
 
 
 }

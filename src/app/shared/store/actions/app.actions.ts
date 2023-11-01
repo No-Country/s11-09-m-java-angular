@@ -25,6 +25,8 @@ export const AppActions = createActionGroup({
     'Load Topics': emptyProps(),
     'Load Topics Error': props<{ error: string }>(),
     'Load Topics Success': props<({ topics:  TopicsModel[] , skill: SkillModel })>(),
+
+    'Set Finish Loading':emptyProps(),
   },
 });
 

@@ -11,6 +11,14 @@ export const handleInitLoad = (state: AppState): AppState => {
   };
 
 };
+export const handleFinishLoad = (state: AppState): AppState => {
+  return {
+    ...state,
+    isLoading: false,
+    renderGraph: true
+  };
+
+};
 
 export const handleRoleLoadSuccess = (state: AppState, {roles}: { roles: RoleModel[] }): AppState => {
   return {
@@ -55,6 +63,8 @@ export const handleTopicsLoadFailure = (state: AppState, {error}: { error: strin
 export const handleRoleSelected = (state: AppState, {roleSelected}: { roleSelected: RoleModel }): AppState => {
   return {
     ...state,
+    isLoading: true,
+    renderGraph: false,
     roleSelected
   };
 
@@ -69,14 +79,13 @@ export const handleSkillsLoadSuccess = (state: AppState, {skills}: { skills: Ski
   return {
     ...state,
     roleSelected: role,
-    isLoading: false,
     error: null
   };
 
 };
 
 export const handleTopicsLoadSuccess = (state: AppState, {topics, skill}: {
-  topics: TopicsModel[] ,
+  topics: TopicsModel[],
   skill: SkillModel
 }): AppState => {
 
@@ -109,7 +118,6 @@ export const handleTopicsLoadSuccess = (state: AppState, {topics, skill}: {
   return {
     ...state,
     roleSelected: roleUpdated,
-    isLoading: false,
     error: null
   };
 
