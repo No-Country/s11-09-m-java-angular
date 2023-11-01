@@ -4,12 +4,15 @@ import com.nocountry.roadmapify.topicresource.TopicResource;
 import com.nocountry.roadmapify.topicresource.TopicResourceRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 @RequiredArgsConstructor
@@ -23,23 +26,41 @@ public class TopicServiceImpl implements TopicService{
     public List<TopicResponse> getAll() {
         var topics = topicRepository.findAll();
         List<TopicResponse> responses = new ArrayList<>(topics.size());
+        UriComponentsBuilder builder;
+        Link link;
         for (Topic topic : topics) {
             TopicResponse response = modelMapper.map(topic,TopicResponse.class);
+            builder = UriComponentsBuilder.fromUri(WebMvcLinkBuilder
+                    .linkTo(methodOn(TopicController.class)
+                            .getById(topic.getId()))
+                    .withSelfRel().toUri()).scheme("https");
 
+
+            link = Link.of(builder.build().toUriString());
+            response.add(link);
             response.add( //to links of RepresentationModel
                     WebMvcLinkBuilder
-                            .linkTo(WebMvcLinkBuilder.methodOn(TopicController.class) // method on controller
+                            .linkTo(methodOn(TopicController.class) // method on controller
                              .getById(topic.getId())) //call to method with necessary parameters
                             .withSelfRel()); //indicates rel
             if(topic.getParent()!=null){
                 response.setParent(modelMapper.map(topic.getParent(),ParentDTO.class));
-                response.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TopicController.class).getById(topic.getParent().getId())).withRel("parent"));
+                builder = UriComponentsBuilder.fromUri(WebMvcLinkBuilder.linkTo(methodOn(TopicController.class).getById(topic.getParent().getId())).toUri()).scheme("https");
+
+
+                link = Link.of(builder.build().toUriString());
+                response.add(link);
             }
             topicRepository.findAllByParentId(topic.getId()).forEach(
                     child -> {
                         ChildrenDTO childDto = modelMapper.map(child, ChildrenDTO.class);
                         response.addChild(childDto);
-                        childDto.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TopicController.class).getById(child.getId())).withSelfRel());
+                        UriComponentsBuilder builder2 = UriComponentsBuilder.fromUri(WebMvcLinkBuilder.linkTo(methodOn(TopicController.class).getById(child.getId())).withSelfRel().toUri()).scheme("https");
+
+
+                        Link link2 = Link.of(builder2.build().toUriString());
+                        response.add(link2);
+                        childDto.add(WebMvcLinkBuilder.linkTo(methodOn(TopicController.class).getById(child.getId())).withSelfRel());
                     }
 
             );
@@ -53,7 +74,14 @@ public class TopicServiceImpl implements TopicService{
         List<Topic> parents = topicRepository.findAllByIsRootTrue();
         List<ParentDTO> responses = new ArrayList<>(parents.size());
         for (Topic parent : parents) {
-            responses.add(modelMapper.map(parent,ParentDTO.class));
+            ParentDTO response = modelMapper.map(parent,ParentDTO.class);
+            responses.add(response);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromUri(WebMvcLinkBuilder.linkTo(methodOn(TopicController.class).getById(parent.getId())).withSelfRel().toUri()).scheme("https");
+
+
+            Link link = Link.of(builder.build().toUriString());
+            response.add(link);
+
         }
         return responses;
     }
@@ -133,7 +161,12 @@ public class TopicServiceImpl implements TopicService{
             ChildrenDTO childDto = modelMapper.map(child, ChildrenDTO.class);
             childDto.setTopicRole(setRole(child));
             response.addChild(childDto);
-            childDto.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TopicController.class).getById(child.getId())).withSelfRel());
+
+            UriComponentsBuilder builder = UriComponentsBuilder.fromUri(WebMvcLinkBuilder.linkTo(methodOn(TopicController.class).getById(child.getId())).withSelfRel().toUri()).scheme("https");
+
+
+            Link link = Link.of(builder.build().toUriString());
+            childDto.add(link);
         }
 
 
