@@ -4,14 +4,10 @@
   </div>
 </div>
 <ng-template #notLoading>
-  <ul>
-    <li>{{roleSelected?.name}}</li>
-    <ul *ngFor="let skills of roleSelected?.skills ">
-      <li>{{skills.name}}</li>
-      <ul *ngFor="let topics of skills.topics ">
-        <li>{{topics.name}}</li>
-      </ul>
-    </ul>
-  </ul>
+
+  <app-tree-graph [nodes]="nodes"/>
+
 </ng-template>
+
+
 
