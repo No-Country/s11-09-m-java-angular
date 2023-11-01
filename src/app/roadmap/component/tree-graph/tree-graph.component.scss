@@ -1,9 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital@0;1&display=swap');
 
 .modificadorDeEstilosPredefinidos {
-    opacity: 1 !important;
-  }
+  opacity: 1 !important;
+}
 
-.rotate{
-  transform: rotate(45eg); 
+.rotate {
+  transform: rotate(45eg);
+}
+
+.graph-container {
+  width: 100vw;
+  height: 80vh;
+
 }
