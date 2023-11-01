@@ -1,10 +1,9 @@
 <ngx-graph
-  class="rotate"
-  class="chart-container"
+  class="rotate chart-container"
   [draggingEnabled]="false"
-  [autoZoom]="true"
+  [autoZoom]="false"
   [zoomSpeed]="0.05"
-  [view]="[1920, 1080]"
+  [view]="[1200,600]"
   [links]="mapLinks(nodes)"
   [nodes]="nodes"
   [clusters]="mapNodeGroupToCluster(nodes)"
