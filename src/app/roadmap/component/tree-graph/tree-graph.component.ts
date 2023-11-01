@@ -22,6 +22,7 @@ export class TreeGraphComponent implements OnInit {
   @Input() nodes!: Node[][]
   clusters: ClusterNode[] = []
   clusterCounter = 0;
+  nodeVoidCounter = 0;
   links: Edge [] = []
   graphData: graph = {
     nodes: [],
@@ -30,12 +31,54 @@ export class TreeGraphComponent implements OnInit {
   }
 
   getGraphData() {
+
+    let nodeVoid: Node = this.generateNodeVoid()
+    let linkVoid: Edge = this.generateLink('', nodeVoid.id)
+    this.graphData.nodes.push(nodeVoid)
     this.nodes.forEach(nodeGroup => {
       this.graphData.nodes.push(...nodeGroup);
       this.graphData.clusters.push(...this.mapNodeGroupToCluster(nodeGroup));
       this.graphData.links.push(...this.mapLinks(nodeGroup));
+      ////////////////////////////////////////////////////////
+      if (linkVoid.source === '') {
+        linkVoid = {
+          ...linkVoid,
+          source: nodeGroup[0].id
+        }
+        this.graphData.links.push(linkVoid)
+        linkVoid = this.generateLink(nodeVoid.id, '')
+      } else {
+        linkVoid = {
+          ...linkVoid,
+          target: nodeGroup[0].id
+        }
+        this.graphData.links.push(linkVoid)
+        nodeVoid = this.generateNodeVoid()
+        linkVoid = this.generateLink(nodeGroup[0].id, nodeVoid.id)
+        this.graphData.nodes.push(nodeVoid)
+
+      }
+
+
     });
 
+
+  }
+
+  generateNodeVoid(): Node {
+    this.nodeVoidCounter++
+    return {
+      id: `idVoid${this.nodeVoidCounter}`,
+      label: ''
+    }
+  }
+
+  generateLink(source: string, target: string): Edge {
+    return {
+      id: `idLinkVoid${this.nodeVoidCounter}`,
+      source: source,
+      target: target
+    }
   }
 
 
@@ -50,7 +93,7 @@ export class TreeGraphComponent implements OnInit {
     }
 
 
-    nodesSliced.forEach((nodeGroup, index) => {
+    nodesSliced.forEach(nodeGroup => {
       let cluster: ClusterNode = {
         id: '' + this.clusterCounter,
         childNodeIds: nodeGroup.map(node => node.id),
