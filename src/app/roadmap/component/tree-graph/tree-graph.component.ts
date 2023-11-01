@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Edge, NgxGraphModule} from "@swimlane/ngx-graph";
 import {ClusterNode, Node} from "@swimlane/ngx-graph/lib/models/node.model";
 import {AsyncPipe, CommonModule, NgForOf} from "@angular/common";
@@ -12,13 +12,31 @@ import {AsyncPipe, CommonModule, NgForOf} from "@angular/common";
   imports: [NgxGraphModule, NgForOf, AsyncPipe, CommonModule],
   styleUrls: ['./tree-graph.component.scss']
 })
-export class TreeGraphComponent {
+
+
+export class TreeGraphComponent implements OnInit {
+
 
   draggingEnabled: boolean = false;
 
-  @Input() nodes!: Node[]
+  @Input() nodes!: Node[][]
   clusters: ClusterNode[] = []
+  clusterCounter = 0;
   links: Edge [] = []
+  graphData: graph = {
+    nodes: [],
+    clusters: [],
+    links: []
+  }
+
+  getGraphData() {
+    this.nodes.forEach(nodeGroup => {
+      this.graphData.nodes.push(...nodeGroup);
+      this.graphData.clusters.push(...this.mapNodeGroupToCluster(nodeGroup));
+      this.graphData.links.push(...this.mapLinks(nodeGroup));
+    });
+
+  }
 
 
   mapNodeGroupToCluster(nodes: Node[]) {
@@ -34,13 +52,14 @@ export class TreeGraphComponent {
 
     nodesSliced.forEach((nodeGroup, index) => {
       let cluster: ClusterNode = {
-        id: '' + index,
+        id: '' + this.clusterCounter,
         childNodeIds: nodeGroup.map(node => node.id),
         label: 'Topic',
 
       }
 
       this.clusters.push(cluster);
+      this.clusterCounter++
     })
     return this.clusters
 
@@ -71,5 +90,15 @@ export class TreeGraphComponent {
     return this.links;
   }
 
+  ngOnInit(): void {
+    this.getGraphData()
+  }
 
+
+}
+
+interface graph {
+  nodes: Node[],
+  clusters: ClusterNode[],
+  links: Edge[]
 }
