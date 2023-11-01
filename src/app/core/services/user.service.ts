@@ -23,6 +23,7 @@ export class UserService {
     const path = this.apiUrl + 'users/username/' + username;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + this.localStorageService.getToken()
     });
 
     // Realiza la primera solicitud para obtener el id
