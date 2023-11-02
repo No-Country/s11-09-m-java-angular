@@ -1,10 +1,11 @@
 package com.nocountry.roadmapify.topic;
 
+import com.nocountry.roadmapify.topicresource.TopicResourceDTO;
+
 import java.util.List;
 
 public interface TopicService {
 
-    List<TopicResponse> getAll();
     TopicResponse getById(Long id);
     TopicResponse getByName(String name);
 
@@ -13,4 +14,8 @@ public interface TopicService {
     void save(Topic topic);
 
     void deleteTopicById(Long id);
+
+    void updateTopic(Long id, TopicDTO topicDTO);
+
+    void addChild(Long id,List<TopicResourceDTO> resources);
 }

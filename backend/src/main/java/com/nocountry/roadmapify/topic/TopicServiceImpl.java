@@ -1,6 +1,7 @@
 package com.nocountry.roadmapify.topic;
 
 import com.nocountry.roadmapify.topicresource.TopicResource;
+import com.nocountry.roadmapify.topicresource.TopicResourceDTO;
 import com.nocountry.roadmapify.topicresource.TopicResourceRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -21,54 +22,7 @@ public class TopicServiceImpl implements TopicService{
     private final TopicRepository topicRepository;
     private final ModelMapper modelMapper;
     private final TopicResourceRepository resourceRepository;
-    @Override
-    @Transactional
-    public List<TopicResponse> getAll() {
-        var topics = topicRepository.findAll();
-        List<TopicResponse> responses = new ArrayList<>(topics.size());
-        UriComponentsBuilder builder;
-        Link link;
-        for (Topic topic : topics) {
-            TopicResponse response = modelMapper.map(topic,TopicResponse.class);
-            builder = UriComponentsBuilder.fromUri(WebMvcLinkBuilder
-                    .linkTo(methodOn(TopicController.class)
-                            .getById(topic.getId()))
-                    .withSelfRel().toUri()).scheme("https");
 
-
-            link = Link.of(builder.build().toUriString());
-            response.add(link);
-            response.add( //to links of RepresentationModel
-                    WebMvcLinkBuilder
-                            .linkTo(methodOn(TopicController.class) // method on controller
-                             .getById(topic.getId())) //call to method with necessary parameters
-                            .withSelfRel()); //indicates rel
-            if(topic.getParent()!=null){
-                response.setParent(modelMapper.map(topic.getParent(),ParentDTO.class));
-                builder = UriComponentsBuilder.fromUri(WebMvcLinkBuilder.linkTo(methodOn(TopicController.class).getById(topic.getParent().getId())).toUri()).scheme("https");
-
-
-                link = Link.of(builder.build().toUriString());
-                response.add(link);
-            }
-            topicRepository.findAllByParentId(topic.getId()).forEach(
-                    child -> {
-                        ChildrenDTO childDto = modelMapper.map(child, ChildrenDTO.class);
-                        response.addChild(childDto);
-                        UriComponentsBuilder builder2 = UriComponentsBuilder.fromUri(WebMvcLinkBuilder.linkTo(methodOn(TopicController.class).getById(child.getId())).withSelfRel().toUri()).scheme("https");
-
-
-                        Link link2 = Link.of(builder2.build().toUriString());
-                        response.add(link2);
-                        childDto.add(WebMvcLinkBuilder.linkTo(methodOn(TopicController.class).getById(child.getId())).withSelfRel());
-                    }
-
-            );
-            responses.add(response);
-        }
-
-        return responses;
-    }
     @Override
     public List<ParentDTO> getAllParents(){
         List<Topic> parents = topicRepository.findAllByIsRootTrue();
@@ -149,6 +103,36 @@ public class TopicServiceImpl implements TopicService{
         );
 
         topicRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateTopic(Long id, TopicDTO topicDTO) {
+        Topic topic = topicRepository.findById(id).orElseThrow(
+                ()->new RuntimeException("Topic doesn't exist with id: "+ id)
+        );
+
+        if (topicDTO.getName() != null) {
+            topic.setName(topicDTO.getName());
+        }
+        if(topicDTO.getDescription() !=null){
+            topic.setDescription(topicDTO.getDescription());
+        }
+
+        topicRepository.save(topic);
+    }
+    @Override
+    public void addChild(Long id, List<TopicResourceDTO> resources) {
+        Topic topic = topicRepository.findById(id).orElseThrow(
+                ()->new RuntimeException("Topic doesn't exist with id: "+ id)
+        );
+
+        for (TopicResourceDTO resourceDTO : resources) {
+            TopicResource resource = modelMapper.map(resourceDTO,TopicResource.class);
+            topic.addResource(resource);
+            resource.setTopic(topic);
+            resourceRepository.save(resource);
+        }
+        topicRepository.save(topic);
     }
 
     private TopicResponse makeTopicResponse(Topic topic){
