@@ -39,7 +39,6 @@ export class TreeGraphComponent implements OnInit {
 
 
   getGraphData() {
-
     let nodeVoid: Node = this.generateNodeVoid()
     let linkVoid: Edge = this.generateLink('', nodeVoid.id)
     this.graphData.nodes.push(nodeVoid)

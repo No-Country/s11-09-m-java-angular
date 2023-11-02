@@ -23,6 +23,8 @@ export class GraphService {
         skills.forEach(skill => {
           let oneNode: Node[] = []
           oneNode.push(this.mapToNodesSkill(skill));
+
+
           oneNode.push(...this.mapToNodesTopics(skill));
           nodes.push(oneNode)
         });
@@ -36,14 +38,24 @@ export class GraphService {
   private mapToNodesTopics(skill: SkillModel): Node[] {
     return skill.topics.map((topic, id) => ({
       id: topic.name + id, // Genera un ID automático, puedes implementar esta función
-      label: topic.name
+      label: topic.name,
+      data: {
+        isSkill: false,
+        colorIn: 'white',
+        textColor:'black'
+      }
     }));
   }
 
   private mapToNodesSkill(skill: SkillModel): Node {
     return {
       id: skill.name,
-      label: skill.name
+      label: skill.name,
+      data: {
+        isSkill: true,
+        colorSkill: '#4155A7',
+        textColor:'white'
+      }
     };
   }
 
