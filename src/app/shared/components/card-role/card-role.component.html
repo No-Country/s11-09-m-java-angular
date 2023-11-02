@@ -1,8 +1,37 @@
 <div class="card-role">
-  <div [ngClass]="[borderColor + '-border', backgroundColor + '-bg', 'role-img', 'border', 'rounded-2']">
+  <div *ngIf="role === '';else iconRole"
+       [ngClass]="[borderColor + '-border', backgroundColor + '-bg', 'role-img', 'border', 'rounded-2']">
     <div class="d-flex justify-content-center py-3">
       <app-icon-role></app-icon-role>
     </div>
   </div>
-  <p *ngIf="showTitle" class="card-title">{{title}}</p>
+
+  <ng-template #iconRole>
+    <div [ngClass]="[borderColor + '-border', 'role-img', 'border', 'rounded-2']">
+      <ng-container [ngSwitch]="role.toLowerCase()">
+        <ng-container *ngSwitchCase="'backend'">
+          <app-icon-backend/>
+        </ng-container>
+        <ng-container *ngSwitchCase="'frontend'">
+          <app-icon-frontend/>
+        </ng-container>
+        <ng-container *ngSwitchCase="'devops'">
+          <app-icon-devops/>
+        </ng-container>
+        <ng-container *ngSwitchCase="'ux-ui'">
+          <app-icon-ux-ui/>
+        </ng-container>
+        <ng-container *ngSwitchCase="'qa-tester'">
+          <app-icon-qa/>
+        </ng-container>
+        <ng-container *ngSwitchCase="'ciberseguridad'">
+          <app-icon-cibersecurity/>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          <app-icon-role/>
+        </ng-container>
+      </ng-container>
+    </div>
+  </ng-template>
+  <p *ngIf="showTitle" class="card-title">{{title|titlecase}}</p>
 </div>
