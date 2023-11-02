@@ -17,4 +17,5 @@ export class CardRoleComponent {
   @Input() backgroundColor: Color = "white";
 
 
+
 }
