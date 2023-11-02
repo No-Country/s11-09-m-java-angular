@@ -16,6 +16,7 @@ import {JwtModule} from "@auth0/angular-jwt";
 import {tokenGetter} from "./core/config/tokenGetter";
 import {appReducer} from "./shared/store/reducers/app.reducers";
 import {AppEffects} from "./shared/store/effects/app.effects";
+import {profileReducer} from "./profile/store/reducers/profile.reducers";
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -28,7 +29,7 @@ import {AppEffects} from "./shared/store/effects/app.effects";
     NgxGraphModule,
     AppRoutingModule,
     BrowserModule,
-    StoreModule.forRoot({app: appReducer, auth: authReducer,}, {}),
+    StoreModule.forRoot({app: appReducer, auth: authReducer, profile: profileReducer}, {}),
     EffectsModule.forRoot([AuthEffects, AppEffects]),
     NgbModule,
     NavbarComponent,

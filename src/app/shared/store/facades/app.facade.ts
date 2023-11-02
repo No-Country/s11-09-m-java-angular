@@ -36,7 +36,7 @@ export class AppFacade {
     this.store.dispatch(AppActions.loadTopics())
   }
 
-  getTopics(): Observable<RoleModel[]> {
+  getRoles(): Observable<RoleModel[]> {
     return this.store.select(selectAppRoles)
   }
 

@@ -1,0 +1,15 @@
+<div ngbDropdown class="d-inline-block">
+  <button type="button" class="btn btn-outline-light p-0" id="dropdown1" ngbDropdownToggle>
+    <app-icon-add/>
+  </button>
+  <div ngbDropdownMenu aria-labelledby="dropdown1">
+    <!-- items as buttons -->
+    <button ngbDropdownItem *ngFor="let role of rolesAvaliable$|async" (click)="startRole(role)">
+      <div class="d-flex align-items-center">
+        <app-card-role [role]="role.name" [borderColor]="role.name"/>
+        {{role.name}}
+      </div>
+    </button>
+  </div>
+</div>
+

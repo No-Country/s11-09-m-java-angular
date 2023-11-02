@@ -20,7 +20,7 @@ export class RoleDeckComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.roles$ = this.appFacade.getTopics();
+    this.roles$ = this.appFacade.getRoles();
   }
 
   onRoleClick(role: RoleModel) {
