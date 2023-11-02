@@ -1,7 +1,8 @@
 <div class="deck-container m-auto">
   <div class="row gy-4">
-    <app-card-role *ngFor="let role of (roles$|async)" [backgroundColor]="'cyan'" [borderColor]="'black'"
-                   [title]="role.name"
+    <app-card-role *ngFor="let role of (roles$|async)" [role]="role.name"
+                   [borderColor]="role.name.toLowerCase()"
+                   [title]="role.name.toLowerCase()"
                    class="col-4" [routerLink]="'../roadmap'" (click)="onRoleClick(role)"/>
   </div>
 </div>

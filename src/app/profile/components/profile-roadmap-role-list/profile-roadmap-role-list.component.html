@@ -1,22 +1,12 @@
 <section class="py-5">
   <main class="d-flex justify-content-between">
-    <div class="d-flex overflow-x-scroll align-items-center">
-      <ng-container *ngFor="let role of roles">
+    <div class="d-flex overflow-x-auto align-items-center">
+      <ng-container *ngFor="let role of rolesStarted$|async">
         <div class="me-4">
-          <app-card-role [showTitle]="false" [backgroundColor]="'grey'" [borderColor]="'cyan'"/>
+          <app-card-role [role]="role.name" [title]="role.name" [borderColor]="role.name"/>
         </div>
       </ng-container>
-      <div *ngIf="roles.length<3">
-        <button (click)="addRoles()" class="btn btn-outline-light p-0">
-          <app-icon-add/>
-        </button>
-      </div>
     </div>
-    <div *ngIf="roles.length>2" class="mx-2">
-      <button (click)="addRoles()" class="btn btn-outline-light">
-        <app-icon-add/>
-      </button>
-    </div>
-
+    <app-button-start-role/>
   </main>
 </section>

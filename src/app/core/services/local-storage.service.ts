@@ -29,4 +29,6 @@ export class LocalStorageService {
   clear(): void {
     localStorage.clear();
   }
+
+
 }
