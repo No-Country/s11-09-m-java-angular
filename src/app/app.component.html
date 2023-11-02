@@ -1,6 +1,14 @@
-<header>
-  <app-navbar/>
-</header>
-<main>
-  <router-outlet></router-outlet>
-</main>
+<div *ngIf="loading; else pageTemplate" class="d-flex justify-content-center align-items-center h-100">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+
+<ng-template #pageTemplate>
+  <header>
+    <app-navbar/>
+  </header>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+</ng-template>

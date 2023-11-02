@@ -4,12 +4,13 @@ import {IconDashboardComponent} from "../../../shared/components/icon-dashboard/
 import {ProfileSkillsListComponent} from "../../components/profile-skills-list/profile-skills-list.component";
 import {IconSkillsListComponent} from "../../../shared/components/icon-skills-list/icon-skills-list.component";
 import {IconTopicsComponent} from "../../../shared/components/icon-topics/icon-topics.component";
+import {IconSuccessComponent} from "../../../shared/components/icon-success/icon-success.component";
 
 @Component({
   selector: 'app-profile-skills',
   templateUrl: './profile-skills.layout.html',
   standalone: true,
-  imports: [CommonModule, IconDashboardComponent, ProfileSkillsListComponent, IconSkillsListComponent, IconTopicsComponent],
+  imports: [CommonModule, IconDashboardComponent, ProfileSkillsListComponent, IconSkillsListComponent, IconTopicsComponent, IconSuccessComponent],
   styleUrls: ['./profile-skills.layout.scss']
 })
 export class ProfileSkillsLayout {

@@ -8,14 +8,10 @@
 
 
     <ng-container *ngIf="isAuthenticated; else notAuthenticated">
-
       <div class="">
         <app-search-input [placeholder]="''"/>
       </div>
-
-      <app-profile-image/>
-
-
+      <app-profile-image routerLink="profile"/>
     </ng-container>
     <ng-template #notAuthenticated>
       <a class="btn btn-primary btn-sm btn-lg" routerLink="auth/login">Log in</a>

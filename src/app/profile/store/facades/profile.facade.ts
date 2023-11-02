@@ -76,6 +76,5 @@ export class ProfileFacade {
   getRolesAvailable(): Observable<RoleModel[]> {
     this.appFacade.updateTopics()
     return this.appFacade.getRoles()
-
   }
 }
